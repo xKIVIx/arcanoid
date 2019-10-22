@@ -1,0 +1,99 @@
+﻿using UnityEngine;
+
+namespace Arcanoid.Models
+{
+    public struct Block
+    {
+        #region Public Constructors
+
+        public Block(Bounds bounds)
+        {
+            _bounds = bounds;
+
+            var boundMax = _bounds.max;
+            var boundMin = _bounds.min;
+
+            DeltaTop = new Vector2(boundMin.x - boundMax.x, 0);
+            DeltaRight = new Vector2(0, boundMax.y - boundMin.y);
+            DeltaBottom = new Vector2(boundMin.x - boundMax.x, 0);
+            DeltaLeft = new Vector2(0, boundMin.y - boundMax.y);
+
+            TopK = (boundMin.x - boundMax.x) * boundMax.y;
+            BottomK = (boundMin.x - boundMax.x) * boundMin.y;
+
+            RightK = (boundMin.y - boundMax.y) * boundMax.x;
+            LeftK = (boundMax.y - boundMin.y) * boundMin.x;
+        }
+
+        #endregion Public Constructors
+
+        #region Private Fields
+
+        private Bounds _bounds;
+
+        #endregion Private Fields
+
+        #region Public Properties
+
+        /// <summary>
+        /// x1y2 - x2y2 для верхней границы
+        /// </summary>
+        public float BottomK { get; }
+
+        /// <summary>
+        /// (x1 - x2, y1 - y2)
+        /// </summary>
+        public Vector2 DeltaBottom { get; }
+
+        /// <summary>
+        /// (x1 - x2, y1 - y2)
+        /// </summary>
+        public Vector2 DeltaLeft { get; }
+
+        /// <summary>
+        /// (x1 - x2, y1 - y2)
+        /// </summary>
+        public Vector2 DeltaRight { get; }
+
+        /// <summary>
+        /// (x1 - x2, y1 - y2)
+        /// </summary>
+        public Vector2 DeltaTop { get; }
+
+        /// <summary>
+        /// x1y2 - x2y2 для верхней границы
+        /// </summary>
+        public float LeftK { get; }
+
+        /// <summary>
+        /// x1y2 - x2y1 для верхней границы
+        /// </summary>
+        public float RightK { get; }
+
+        /// <summary>
+        /// x1y2 - x2y1 для верхней границы
+        /// </summary>
+        public float TopK { get; }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        /// <summary>
+        /// Проверка принадлежности точки блоку.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns>
+        /// True - если точка содержится в границах блока.
+        /// </returns>
+        public bool IsOnBounds(Vector2 point)
+        {
+            return point.x >= _bounds.min.x &&
+                   point.x <= _bounds.max.x &&
+                   point.y >= _bounds.min.y &&
+                   point.y <= _bounds.max.y;
+        }
+
+        #endregion Public Methods
+    }
+}
