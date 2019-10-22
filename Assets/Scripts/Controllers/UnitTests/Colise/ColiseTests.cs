@@ -3,7 +3,7 @@ using Arcanoid.Models;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Controllers
+namespace Controllers.ColiseContrller
 {
     public class ColiseTests
     {

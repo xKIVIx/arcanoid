@@ -34,9 +34,10 @@ namespace Arcanoid.Controllers
         /// </summary>
         public Vector2 CalculateRicochet(Vector2 movementVector, Vector2 normal)
         {
-            var a = normal * movementVector;
+            var v = movementVector * -1.0f;
+            var a = normal * v;
             var k = (a.x + a.y) / normal.sqrMagnitude * 2.0f;
-            var result = k * normal - movementVector;
+            var result = k * normal - v;
             return result;
         }
 
