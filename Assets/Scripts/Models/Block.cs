@@ -105,12 +105,12 @@ namespace Arcanoid.Models
         /// <returns>
         /// True - если точка содержится в границах блока.
         /// </returns>
-        public bool IsOnBounds(Vector2 point)
+        public bool IsOnBounds(Vector2 point, float e)
         {
-            return point.x >= _bounds.min.x &&
-                   point.x <= _bounds.max.x &&
-                   point.y >= _bounds.min.y &&
-                   point.y <= _bounds.max.y;
+            return point.x >= _bounds.min.x - e &&
+                   point.x <= _bounds.max.x + e &&
+                   point.y >= _bounds.min.y - e &&
+                   point.y <= _bounds.max.y + e;
         }
 
         #endregion Public Methods

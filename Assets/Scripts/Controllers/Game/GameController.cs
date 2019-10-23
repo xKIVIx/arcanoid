@@ -90,8 +90,8 @@ namespace Arcanoid.Controllers
                 if (coliseResult.isColise)
                 {
                     var movementVector = coliseResult.colisePoint - currentPos;
-                    _balls[i].lastMoveDir = _coliseController.CalculateRicochet(movementVector, coliseResult.normal);
-                    _balls[i].view.Move(movementVector + _balls[i].lastMoveDir * 0.1f);
+                    _balls[i].lastMoveDir = _coliseController.CalculateRicochet(_balls[i].lastMoveDir, coliseResult.normal);
+                    //_balls[i].view.Move(movementVector + _balls[i].lastMoveDir * 0.1f);
                 }
                 else
                 {

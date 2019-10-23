@@ -78,12 +78,12 @@ namespace Arcanoid.Controllers
 
                 var point = new Vector2((side.K * segmentDeltaX - side.deltaX * segmentK) / d,
                                         (side.K * segmentDeltaY - side.deltaY * segmentK) / d);
-
-                if (point.x >= minPoint.x &&
-                    point.x <= maxPoint.x &&
-                    point.y >= minPoint.y &&
-                    point.y <= maxPoint.y &&
-                    block.IsOnBounds(point))
+                float e = 0.01f;
+                if (point.x >= minPoint.x - e &&
+                    point.x <= maxPoint.x + e &&
+                    point.y >= minPoint.y - e &&
+                    point.y <= maxPoint.y + e &&
+                    block.IsOnBounds(point, e))
                 {
                     var v = point - startPoint;
                     if (v.sqrMagnitude < currSqrDistance)
