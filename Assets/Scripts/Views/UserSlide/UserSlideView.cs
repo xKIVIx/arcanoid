@@ -17,11 +17,6 @@ namespace Arcanoid.Views
         /// </summary>
         private BoxCollider2D _colider;
 
-        /// <summary>
-        /// Рабочая область плитки.
-        /// </summary>
-        private Bounds _workspace;
-
         #endregion Private Fields
 
         #region Public Properties
@@ -30,24 +25,6 @@ namespace Arcanoid.Views
         /// <see cref="IUserSlideView.CountSizeBonus"/>
         /// </summary>
         public uint CountSizeBonus { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        /// <summary>
-        /// <see cref="IUserSlideView.Speed"/>
-        /// </summary>
-        public float Speed { get; set; }
-
-        /// <summary>
-        /// <see cref="IUserSlideView.Workspace"/>
-        /// </summary>
-        public Bounds Workspace
-        {
-            get => _workspace;
-            set
-            {
-                _workspace = value;
-                FixOutWorkspace();
-            }
-        }
 
         #endregion Public Properties
 
@@ -63,46 +40,17 @@ namespace Arcanoid.Views
         }
 
         /// <summary>
-        /// <see cref="IUserSlideView.MoveLeft"/>
+        /// <see cref="IUserSlideView.Move(Vector2)"/>
         /// </summary>
-        public void MoveLeft()
+        /// <returns></returns>
+        public void Move(Vector2 moveVector)
         {
-            transform.TransformDirection(new Vector3(-Speed, 0));
-            FixOutWorkspace();
-        }
-
-        /// <summary>
-        /// <see cref="IUserSlideView.MoveRight"/>
-        /// </summary>
-        public void MoveRight()
-        {
-            transform.TransformDirection(new Vector3(Speed, 0));
-            FixOutWorkspace();
+            transform.position += new Vector3(moveVector.x, moveVector.y, 0.0f);
         }
 
         #endregion Public Methods
 
         #region Private Methods
-
-        /// <summary>
-        /// Исправление выхода плитки за границы рабочей области.
-        /// </summary>
-        private void FixOutWorkspace()
-        {
-            var brickBounds = _colider.bounds;
-
-            var delta = _workspace.min.x - brickBounds.min.x;
-            if (delta < 0)
-            {
-                transform.TransformDirection(new Vector3(delta, 0));
-            }
-
-            delta = _workspace.max.x - brickBounds.max.x;
-            if (delta < 0)
-            {
-                transform.TransformDirection(new Vector3(-delta, 0));
-            }
-        }
 
         /// <summary>
         /// Иницилизация.

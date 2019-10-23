@@ -1,22 +1,18 @@
 ﻿using Arcanoid.Controllers;
-using Arcanoid.Models;
 using NUnit.Framework;
 using UnityEngine;
 
 namespace Controllers.ColiseContrller
 {
-    class RicochetTest
+    internal class RicochetTest
     {
+        #region Private Fields
+
         private ColiseController _coliseController;
 
-        /// <summary>
-        /// Иницилизация
-        /// </summary>
-        [SetUp]
-        public void CommonInstall()
-        {
-            _coliseController = new ColiseController();
-        }
+        #endregion Private Fields
+
+        #region Public Methods
 
         [Test]
         public void CalculateRicochet()
@@ -46,5 +42,16 @@ namespace Controllers.ColiseContrller
                 Assert.AreEqual(ricochet[i].y, result.y, 0.1, $"Uncorrect y coord ricochet vector: move vector{movements[i]}");
             }
         }
+
+        /// <summary>
+        /// Иницилизация
+        /// </summary>
+        [SetUp]
+        public void CommonInstall()
+        {
+            _coliseController = new ColiseController();
+        }
+
+        #endregion Public Methods
     }
 }

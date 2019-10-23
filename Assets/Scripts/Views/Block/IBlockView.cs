@@ -2,9 +2,23 @@
 
 namespace Arcanoid.Views
 {
-    public interface IBlocksView
+    /// <summary>
+    /// Интерфейс представления блоков.
+    /// </summary>
+    public interface IBlockView
     {
-        void Remove();
+        #region Public Methods
+        /// <summary>
+        /// Получить информацию для расчета колизии.
+        /// </summary>
+        /// <returns></returns>
         Block GetBlockInfo();
+
+        /// <summary>
+        /// Удалить блок.
+        /// </summary>
+        void Remove();
+
+        #endregion Public Methods
     }
 }

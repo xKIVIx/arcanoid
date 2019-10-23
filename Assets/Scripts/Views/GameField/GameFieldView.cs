@@ -1,26 +1,78 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Arcanoid.Models;
 using UnityEngine;
 
 namespace Arcanoid.Views
 {
+    /// <summary>
+    /// Основная реализация представления игрового поля.
+    /// </summary>
+    [RequireComponent(typeof(BoxCollider2D))]
     public class GameFieldView : MonoBehaviour, IGameFieldView
     {
+        #region Private Fields
 
-        public IUserSlideView UserSlideView => throw new System.NotImplementedException();
+        /// <summary>
+        /// префаб игрового шарика.
+        /// </summary>
+        [SerializeField]
+        private BallView _ballPrefab;
 
-        public IBallView BallView => throw new System.NotImplementedException();
+        /// <summary>
+        /// Точка появления первого шара.
+        /// </summary>
+        [SerializeField]
+        private Transform _ballSpawn;
 
-        // Start is called before the first frame update
-        void Start()
+        /// <summary>
+        /// Плитка игрока.
+        /// </summary>
+        [SerializeField]
+        private UserSlideView _userSlide;
+
+        #endregion Private Fields
+
+        #region Public Properties
+
+        /// <summary>
+        /// <see cref="IGameFieldView.FieldBlock"/>
+        /// </summary>
+        public Block FieldBlock { get; private set; }
+
+        /// <summary>
+        /// <see cref="IGameFieldView.UserSlideView"/>
+        /// </summary>
+        public IUserSlideView UserSlideView => _userSlide;
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        /// <summary>
+        /// <see cref="IGameFieldView.AddBall(Vector2)"/>
+        /// </summary>
+        public IBallView AddBall(Vector2 position)
         {
-
+            return Instantiate(_ballPrefab, position, new Quaternion(), this.transform);
         }
 
-        // Update is called once per frame
-        void Update()
+        /// <summary>
+        /// <see cref="IGameFieldView.AddBall"/>
+        /// </summary>
+        public IBallView AddBall()
         {
-
+            return Instantiate(_ballPrefab, _ballSpawn.position, new Quaternion(), this.transform);
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void Awake()
+        {
+            var colider = GetComponent<BoxCollider2D>();
+            FieldBlock = new Block(colider.bounds);
+        }
+
+        #endregion Private Methods
     }
 }

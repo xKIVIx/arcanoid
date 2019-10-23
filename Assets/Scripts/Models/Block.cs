@@ -41,6 +41,16 @@ namespace Arcanoid.Models
         public float BottomK { get; }
 
         /// <summary>
+        /// Максимальные координаты границ.
+        /// </summary>
+        public Vector3 BoundMax => _bounds.max;
+
+        /// <summary>
+        /// Минимальные координаты границ.
+        /// </summary>
+        public Vector3 BoundMin => _bounds.min;
+
+        /// <summary>
         /// (x1 - x2, y1 - y2)
         /// </summary>
         public Vector2 DeltaBottom { get; }

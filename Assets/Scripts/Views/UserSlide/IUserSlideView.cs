@@ -15,16 +15,6 @@ namespace Arcanoid.Views
         /// </summary>
         uint CountSizeBonus { get; set; }
 
-        /// <summary>
-        /// Скорость перемещения плитки
-        /// </summary>
-        float Speed { get; set; }
-
-        /// <summary>
-        /// Пространство в котором может перемещаться плитка.
-        /// </summary>
-        Bounds Workspace { get; set; }
-
         #endregion Public Properties
 
         #region Public Methods
@@ -36,14 +26,12 @@ namespace Arcanoid.Views
         Block GetBlock();
 
         /// <summary>
-        /// Сместить плитку влево.
+        /// Сместить плитку.
         /// </summary>
-        void MoveLeft();
-
-        /// <summary>
-        /// Сместить плитку вправо.
-        /// </summary>
-        void MoveRight();
+        /// <param name="moveVector">
+        /// Вектор перемещения.
+        /// </param>
+        void Move(Vector2 moveVector);
 
         #endregion Public Methods
     }

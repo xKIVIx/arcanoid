@@ -7,7 +7,7 @@ namespace Arcanoid.Views
     /// Основная реализация разбиваемых блоков.
     /// </summary>
     [RequireComponent(typeof(BoxCollider2D))]
-    internal class BlockView : MonoBehaviour, IBlocksView
+    internal class BlockView : MonoBehaviour, IBlockView
     {
         #region Private Fields
 
@@ -21,7 +21,7 @@ namespace Arcanoid.Views
         #region Public Methods
 
         /// <summary>
-        /// <see cref="IBlocksView.GetBlockInfo"/>
+        /// <see cref="IBlockView.GetBlockInfo"/>
         /// </summary>
         public Block GetBlockInfo()
         {
@@ -29,7 +29,7 @@ namespace Arcanoid.Views
         }
 
         // <summary>
-        /// <see cref="IBlocksView.Remove"/>
+        /// <see cref="IBlockView.Remove"/>
         /// </summary>
         public void Remove()
         {

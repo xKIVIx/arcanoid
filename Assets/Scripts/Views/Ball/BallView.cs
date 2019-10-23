@@ -15,22 +15,26 @@ namespace Arcanoid.Views
         /// </summary>
         private CircleCollider2D _colider;
 
+        #endregion Private Fields
+
+        #region Public Methods
+
         public Vector2 GetCenter()
         {
             throw new System.NotImplementedException();
         }
 
-        #endregion Private Fields
-
-        #region Public Methods
-
-        
+        /// <summary>
+        /// <see cref="IBallView.Move(Vector2)"/>
+        /// </summary>
         public void Move(Vector2 moveVector)
         {
-            transform.TransformDirection(moveVector);
+            transform.position += new Vector3(moveVector.x, moveVector.y, 0.0f);
         }
 
-        
+        /// <summary>
+        /// <see cref="IBallView.Remove"/>
+        /// </summary>
         public void Remove()
         {
             Destroy(gameObject);
@@ -43,7 +47,7 @@ namespace Arcanoid.Views
         /// <summary>
         /// Иницилизация.
         /// </summary>
-        private void Start()
+        private void Awake()
         {
             _colider = GetComponent<CircleCollider2D>();
         }
