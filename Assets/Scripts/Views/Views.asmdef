@@ -1,8 +1,7 @@
 {
-    "name": "Controllers",
+    "name": "Views",
     "references": [
-        "Models",
-        "Views"
+        "Models"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
