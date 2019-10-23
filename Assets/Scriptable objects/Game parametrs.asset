@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8df5601feef5bfd478a00178e763590f, type: 3}
   m_Name: Game parametrs
   m_EditorClassIdentifier: 
-  ballSpeed: 1
+  ballSpeed: 0.1
   fieldWidth: 640
   slideSize: 50
   userSpeed: 0.1

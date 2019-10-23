@@ -90,6 +90,15 @@ namespace Arcanoid.Models
         #region Public Methods
 
         /// <summary>
+        /// Получить центр блока.
+        /// </summary>
+        /// <returns></returns>
+        public Vector2 GetCenter()
+        {
+            return _bounds.center;
+        }
+
+        /// <summary>
         /// Проверка принадлежности точки блоку.
         /// </summary>
         /// <param name="point"></param>

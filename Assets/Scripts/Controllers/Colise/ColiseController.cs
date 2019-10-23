@@ -38,7 +38,7 @@ namespace Arcanoid.Controllers
             var a = normal * v;
             var k = (a.x + a.y) / normal.sqrMagnitude * 2.0f;
             var result = k * normal - v;
-            return result;
+            return result.normalized;
         }
 
         /// <summary>

@@ -36,10 +36,13 @@ public class Init : MonoBehaviour
         IControlController controlController = new ControlKeyboardController(_mainView.GameFieldView.UserSlideView,
                                                                              _mainView.GameFieldView.FieldBlock,
                                                                              _gameParams.userSpeed);
+        IGameController gameController = new GameController(_mainView.GameFieldView,
+                                                            new ColiseController(),
+                                                            _gameParams);
 
         _mainController = new MainController(_mainView,
-                                             new ColiseController(),
-                                             controlController);
+                                             controlController,
+                                             gameController);
     }
 
     #endregion Private Methods

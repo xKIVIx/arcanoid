@@ -10,8 +10,9 @@ namespace Arcanoid.Controllers
     public class ControlKeyboardController : IControlController
     {
         #region Public Constructors
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="userSlideView">Плитка, которой управляет игрок</param>
         /// <param name="fieldBlock">Данные о границах поля</param>
@@ -30,12 +31,25 @@ namespace Arcanoid.Controllers
         #region Private Fields
 
         private Block _fieldBlock;
+        private bool _isPressStartGame = false;
         private float _slideSpeed;
         private IUserSlideView _userSlideView;
 
         #endregion Private Fields
 
         #region Public Methods
+
+        /// <summary>
+        /// <see cref="IControlController.CheckPressStartGame"/>
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckPressStartGame()
+        {
+            bool result = _isPressStartGame;
+            _isPressStartGame = false;
+            return result;
+        }
+
         /// <summary>
         /// <see cref="IControlController.HandleUserAction"/>
         /// </summary>
@@ -52,6 +66,10 @@ namespace Arcanoid.Controllers
                 var delta = _fieldBlock.BoundMax.x - _userSlideView.GetBlock().BoundMax.x;
                 var dist = Mathf.Min(delta, _slideSpeed);
                 _userSlideView.Move(new Vector2(dist, 0));
+            }
+            if (Input.GetKey(KeyCode.Space))
+            {
+                _isPressStartGame = true;
             }
         }
 

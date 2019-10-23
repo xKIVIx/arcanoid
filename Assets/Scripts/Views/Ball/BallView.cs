@@ -21,7 +21,7 @@ namespace Arcanoid.Views
 
         public Vector2 GetCenter()
         {
-            throw new System.NotImplementedException();
+            return transform.position;
         }
 
         /// <summary>

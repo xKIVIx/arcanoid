@@ -13,24 +13,24 @@ namespace Arcanoid.Controllers
         /// 
         /// </summary>
         /// <param name="mainView">Главный представление для взаимодействия с объектами на сцене.</param>
-        /// <param name="coliseController">Контроллер колизии</param>
         /// <param name="controlController">Контроллер управления</param>
+        /// <param name="gameController">Контроллер основной игровой механики</param>
         public MainController(IMainView mainView,
-                              IColiseController coliseController,
-                              IControlController controlController)
+                              IControlController controlController,
+                              IGameController gameController)
         {
             _mainView = mainView;
-            _coliseController = coliseController;
             _controlController = controlController;
+            _gameController = gameController;
         }
 
         #endregion Public Constructors
 
         #region Private Fields
 
-        private IColiseController _coliseController;
         private IControlController _controlController;
         private IMainView _mainView;
+        private IGameController _gameController;
 
         #endregion Private Fields
 
@@ -39,6 +39,11 @@ namespace Arcanoid.Controllers
         public void OnFixedUpdate()
         {
             _controlController.HandleUserAction();
+            if(_controlController.CheckPressStartGame())
+            {
+                _gameController.StartGame();
+            }
+            _gameController.OnFixedUpdate();
         }
 
         #endregion Public Methods
