@@ -38,12 +38,13 @@ namespace Arcanoid.Controllers
 
         public void OnFixedUpdate()
         {
+            _gameController.OnFixedUpdate();
+
             _controlController.HandleUserAction();
-            if(_controlController.CheckPressStartGame())
+            if (_controlController.CheckPressStartGame())
             {
                 _gameController.StartGame();
             }
-            _gameController.OnFixedUpdate();
         }
 
         #endregion Public Methods
