@@ -118,6 +118,21 @@ namespace Arcanoid.Models
                    point.y <= _bounds.max.y + e;
         }
 
+        /// <summary>
+        /// Проверка принадлежности точки блоку.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="e">погрешность</param>
+        /// <returns></returns>
+        public bool IsOnBounds(double x, double y, double e)
+        {
+            return x >= (double)_bounds.min.x - e &&
+                   x <= (double)_bounds.max.x + e &&
+                   y >= (double)_bounds.min.y - e &&
+                   y <= (double)_bounds.max.y + e;
+        }
+
         #endregion Public Methods
     }
 }

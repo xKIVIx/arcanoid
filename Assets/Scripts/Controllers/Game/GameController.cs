@@ -171,7 +171,7 @@ namespace Arcanoid.Controllers
                     endPoint = currentPos + balls[ballId].LastMoveDir * _gameParams.ballSpeed
                 };
 
-                var coliseResult = _coliseController.CheckColise(movementSegment, _gameFieldView.FieldBlock, true);
+                var coliseResult = _coliseController.CheckColise(movementSegment, balls[ballId].GetRadius(), _gameFieldView.FieldBlock, true);
 
                 if (coliseResult.isColise)
                 {
@@ -189,25 +189,26 @@ namespace Arcanoid.Controllers
                     {
                         var lastDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir,
                                                                           coliseResult.normal);
-                        balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
+                        //balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
                         balls[ballId].LastMoveDir = lastDir;
                     }
                     continue;
                 }
 
-                var distance = float.MaxValue;
+                var distance = double.MaxValue;
                 var blocks = _gameFieldView.CurrentLvl.Blocks;
                 var blockIdColise = 0;
                 for (var blockId = _curFirstBlock; blockId < blocks.Length; blockId++)
                 {
-                    var coliseInfo = _coliseController.CheckColise(movementSegment, blocks[blockId].GetBlockInfo());
+                    var coliseInfo = _coliseController.CheckColise(movementSegment, balls[ballId].GetRadius(), blocks[blockId].GetBlockInfo());
                     if (coliseInfo.isColise)
                     {
-                        var newDistance = (coliseInfo.colisePoint - currentPos);
-                        if (newDistance.sqrMagnitude < distance)
+                        var newDistance = coliseInfo.sqrDist;
+                        if (newDistance < distance)
                         {
                             coliseResult = coliseInfo;
                             blockIdColise = blockId;
+                            distance = newDistance;
                         }
                     }
                 }
@@ -216,7 +217,7 @@ namespace Arcanoid.Controllers
                 {
                     var lastDir =  _coliseController.CalculateRicochet(balls[ballId].LastMoveDir,
                                                                                     coliseResult.normal);
-                    balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
+                    //balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
                     balls[ballId].LastMoveDir = lastDir;
 
                     blocks[blockIdColise].Strike();
@@ -239,16 +240,19 @@ namespace Arcanoid.Controllers
                 }
 
                 var slideBlock = _userSlideView.GetBlock();
-                coliseResult = _coliseController.CheckColise(movementSegment, slideBlock);
+                coliseResult = _coliseController.CheckColise(movementSegment, balls[ballId].GetRadius(), slideBlock);
                 if (coliseResult.isColise)
                 {
-                    var ricochet = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir, coliseResult.normal);
-                    var center = slideBlock.GetCenter();
-                    ricochet += new Vector2(coliseResult.colisePoint.x - center.x, 0);
-                    balls[ballId].Move(coliseResult.colisePoint - center);
-                    balls[ballId].LastMoveDir = ricochet;
+                    if(coliseResult.normal.y == -1)
+                    {
+                        var ricochet = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir, coliseResult.normal);
+                        var center = slideBlock.GetCenter();
+                        ricochet += new Vector2(center.x - coliseResult.colisePoint.x, 0);
+                        //balls[ballId].Move(coliseResult.colisePoint - center);
+                        balls[ballId].LastMoveDir = ricochet;
 
-                    continue;
+                        continue;
+                    }
                 }
 
                 balls[ballId].Move(balls[ballId].LastMoveDir * (_gameParams.ballSpeed + _speedBallBonus));
@@ -337,6 +341,7 @@ namespace Arcanoid.Controllers
         {
             IsStartGame = false;
             _speedBallBonus = 0.0f;
+            _curFirstBlock = 0;
         }
 
         #endregion Private Methods

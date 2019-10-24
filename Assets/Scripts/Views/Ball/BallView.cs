@@ -36,6 +36,15 @@ namespace Arcanoid.Views
         }
 
         /// <summary>
+        /// <see cref="IBallView.GetRadius"/>
+        /// </summary>
+        /// <returns></returns>
+        public float GetRadius()
+        {
+            return _colider.bounds.extents.x;
+        }
+
+        /// <summary>
         /// <see cref="IBallView.Move(Vector2)"/>
         /// </summary>
         public void Move(Vector2 moveVector)

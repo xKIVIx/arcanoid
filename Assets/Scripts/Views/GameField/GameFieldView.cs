@@ -31,6 +31,12 @@ namespace Arcanoid.Views
         private Transform _ballSpawn;
 
         /// <summary>
+        /// Точка появления плитки игрока.
+        /// </summary>
+        [SerializeField]
+        private Transform _slideSpawn;
+
+        /// <summary>
         /// Доступные уровни.
         /// </summary>
         [SerializeField]
@@ -40,7 +46,7 @@ namespace Arcanoid.Views
         /// Плитка игрока.
         /// </summary>
         [SerializeField]
-        private UserSlideView _userSlide;
+        private UserSlideView _userSlidePrefab;
 
         /// <summary>
         /// Номер следующего уровня.
@@ -63,7 +69,7 @@ namespace Arcanoid.Views
         /// <summary>
         /// <see cref="IGameFieldView.UserSlideView"/>
         /// </summary>
-        public IUserSlideView UserSlideView => _userSlide;
+        public IUserSlideView UserSlideView { get; private set; }
 
         public List<IBallView> Balls { get; } = new List<IBallView>();
 
@@ -136,6 +142,7 @@ namespace Arcanoid.Views
             var colider = GetComponent<BoxCollider2D>();
             FieldBlock = new Block(colider.bounds);
             _nextLvlId = 0;
+            UserSlideView = Instantiate(_userSlidePrefab, _slideSpawn.position, new Quaternion(), this.transform);
             NextLvl();
         }
 
@@ -147,7 +154,7 @@ namespace Arcanoid.Views
             }
             Balls.Clear();
             AddBall();
-            _userSlide.ResetState();
+            UserSlideView.ResetState();
         }
 
         #endregion Private Methods

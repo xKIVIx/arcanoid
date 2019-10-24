@@ -17,9 +17,9 @@ namespace Arcanoid.Controllers
         {
             #region Public Fields
 
-            public float deltaX;
-            public float deltaY;
-            public float K;
+            public double deltaX;
+            public double deltaY;
+            public double K;
             public Vector2 normal;
 
             #endregion Public Fields
@@ -44,19 +44,27 @@ namespace Arcanoid.Controllers
         /// <summary>
         /// <see cref="IColiseController.CheckColise(MovementSegment, Block)"/>
         /// </summary>
-        public ColiseData CheckColise(MovementSegment segment, Block block, bool isInBlock = false)
+        public ColiseData CheckColise(MovementSegment segment, double radius, Block block, bool isInBlock = false)
         {
+
             var startPoint = segment.startPoint;
             var endPoint = segment.endPoint;
 
-            var minPoint = new Vector2(Mathf.Min(startPoint.x, endPoint.x),
-                                       Mathf.Min(startPoint.y, endPoint.y));
-            var maxPoint = new Vector2(Mathf.Max(startPoint.x, endPoint.x),
-                                       Mathf.Max(startPoint.y, endPoint.y));
+            double startX = segment.startPoint.x;
+            double startY = segment.startPoint.y;
 
-            var segmentDeltaY = startPoint.y - endPoint.y;
-            var segmentDeltaX = startPoint.x - endPoint.x;
-            var segmentK = startPoint.x * endPoint.y - endPoint.x * startPoint.y;
+            double endX = segment.startPoint.x;
+            double endY = segment.startPoint.y;
+
+            double minX = Mathf.Min(startPoint.x, endPoint.x);
+            double minY = Mathf.Min(startPoint.y, endPoint.y);
+
+            double maxX = Mathf.Max(startPoint.x, endPoint.x);
+            double maxY = Mathf.Max(startPoint.y, endPoint.y);
+
+            double segmentDeltaY = startPoint.y - endPoint.y;
+            double segmentDeltaX = startPoint.x - endPoint.x;
+            double segmentK = startPoint.x * endPoint.y - endPoint.x * startPoint.y;
 
             var l = isInBlock ? 1.0f : -1.0f;
 
@@ -69,7 +77,7 @@ namespace Arcanoid.Controllers
             };
 
             var result = new ColiseData();
-            var currSqrDistance = float.MaxValue;
+            var currSqrDistance = double.MaxValue;
 
             foreach (var side in sides)
             {
@@ -78,26 +86,26 @@ namespace Arcanoid.Controllers
                 /// Отрезок параллелен прямой.
                 if (d == 0) continue;
 
-                var point = new Vector2((side.K * segmentDeltaX - side.deltaX * segmentK) / d,
-                                        (side.K * segmentDeltaY - side.deltaY * segmentK) / d);
-                float e = 0.05f;
-                if (point.x >= minPoint.x - e &&
-                    point.x <= maxPoint.x + e &&
-                    point.y >= minPoint.y - e &&
-                    point.y <= maxPoint.y + e &&
-                    block.IsOnBounds(point, e))
+                var pointX = (side.K * segmentDeltaX - side.deltaX * segmentK) / d;
+                var pointY = (side.K * segmentDeltaY - side.deltaY * segmentK) / d;
+                double e = radius;
+                if (pointX >= minX - e &&
+                    pointX <= maxX + e &&
+                    pointY >= minY - e &&
+                    pointY <= maxY + e &&
+                    block.IsOnBounds(pointX, pointY, e))
                 {
-                    var v = point - startPoint;
-                    if (v.sqrMagnitude < currSqrDistance)
+                    var v = (pointX - startX) * (pointX - startX) + (pointY - startY) * (pointY - startY);
+                    if (v < currSqrDistance)
                     {
-                        currSqrDistance = v.sqrMagnitude;
-                        result.colisePoint = point - side.normal * e * 2.0f;
+                        currSqrDistance = v;
+                        result.sqrDist = v;
                         result.normal = side.normal;
                     }
                 }
             }
 
-            result.isColise = currSqrDistance != float.MaxValue;
+            result.isColise = currSqrDistance != double.MaxValue;
 
             return result;
         }

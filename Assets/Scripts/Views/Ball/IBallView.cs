@@ -25,6 +25,12 @@ namespace Arcanoid.Views
         Vector2 GetCenter();
 
         /// <summary>
+        /// Получить радиус шарика.
+        /// </summary>
+        /// <returns></returns>
+        float GetRadius();
+
+        /// <summary>
         /// Переместить в направлении вектора.
         /// </summary>
         /// <param name="moveVector"></param>

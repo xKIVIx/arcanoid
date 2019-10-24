@@ -19,14 +19,15 @@ namespace Arcanoid.Controllers
         Vector2 CalculateRicochet(Vector2 movementVector, Vector2 normal);
 
         /// <summary>
-        /// Проверяет колизиию отрезка движения и блока.
+        /// Проверяет колизиию отрезка движения шарика и блока.
         /// </summary>
         /// <param name="segment">Отрезок перемещения</param>
         /// <param name="block">Информация о границах блока</param>
+        /// <param name="radius"> Радиус шарика</param>
         /// <param name="isInBlock">Должен находится внутри блока?</param>
         /// <returns>
         /// </returns>
-        ColiseData CheckColise(MovementSegment segment, Block block, bool isInBlock = false);
+        ColiseData CheckColise(MovementSegment segment, double radius, Block block, bool isInBlock = false);
 
         /// <summary>
         /// Проверяет колизиию двух блоков.

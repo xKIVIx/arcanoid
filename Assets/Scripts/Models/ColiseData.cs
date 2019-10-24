@@ -12,6 +12,7 @@ namespace Arcanoid.Models
         public Vector2 colisePoint;
         public bool isColise;
         public Vector2 normal;
+        public double sqrDist;
 
         #endregion Public Fields
     }
