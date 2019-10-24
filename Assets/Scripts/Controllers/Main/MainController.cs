@@ -22,6 +22,13 @@ namespace Arcanoid.Controllers
             _mainView = mainView;
             _controlController = controlController;
             _gameController = gameController;
+            _isStartGame = false;
+            _mainView.OnStartGame += () => _isStartGame = true;
+            _mainView.OnStopnGame += () =>
+                {
+                    _gameController.StopGame();
+                    _isStartGame = false;
+                };
         }
 
         #endregion Public Constructors
@@ -31,6 +38,7 @@ namespace Arcanoid.Controllers
         private IControlController _controlController;
         private IMainView _mainView;
         private IGameController _gameController;
+        private bool _isStartGame;
 
         #endregion Private Fields
 
@@ -38,12 +46,15 @@ namespace Arcanoid.Controllers
 
         public void OnFixedUpdate()
         {
-            _gameController.OnFixedUpdate();
-
-            _controlController.HandleUserAction();
-            if (_controlController.CheckPressStartGame())
+            if (_isStartGame)
             {
-                _gameController.StartGame();
+                _gameController.OnFixedUpdate();
+
+                _controlController.HandleUserAction();
+                if (_controlController.CheckPressStartGame())
+                {
+                    _gameController.StartGame();
+                }
             }
         }
 

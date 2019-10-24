@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Arcanoid.Models;
+﻿using Arcanoid.Models;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcanoid.Views
@@ -19,22 +19,16 @@ namespace Arcanoid.Views
         private BallView _ballPrefab;
 
         /// <summary>
-        /// префаб бонуса.
-        /// </summary>
-        [SerializeField]
-        private BonusView _bonusPrefab;
-
-        /// <summary>
         /// Точка появления первого шара.
         /// </summary>
         [SerializeField]
         private Transform _ballSpawn;
 
         /// <summary>
-        /// Точка появления плитки игрока.
+        /// префаб бонуса.
         /// </summary>
         [SerializeField]
-        private Transform _slideSpawn;
+        private BonusView _bonusPrefab;
 
         /// <summary>
         /// Доступные уровни.
@@ -43,24 +37,35 @@ namespace Arcanoid.Views
         private LvlView[] _lvls;
 
         /// <summary>
+        /// Номер следующего уровня.
+        /// </summary>
+        private int _nextLvlId;
+
+        /// <summary>
+        /// Точка появления плитки игрока.
+        /// </summary>
+        [SerializeField]
+        private Transform _slideSpawn;
+
+        /// <summary>
         /// Плитка игрока.
         /// </summary>
         [SerializeField]
         private UserSlideView _userSlidePrefab;
 
-        /// <summary>
-        /// Номер следующего уровня.
-        /// </summary>
-        private int _nextLvlId;
-
         #endregion Private Fields
 
         #region Public Properties
+
+        public List<IBallView> Balls { get; } = new List<IBallView>();
+
+        public List<IBonusView> Bonuses { get; } = new List<IBonusView>();
 
         /// <summary>
         /// <see cref="IGameFieldView.CurrentLvl"/>
         /// </summary>
         public ILvlView CurrentLvl { get; private set; }
+
         /// <summary>
         /// <see cref="IGameFieldView.FieldBlock"/>
         /// </summary>
@@ -70,10 +75,6 @@ namespace Arcanoid.Views
         /// <see cref="IGameFieldView.UserSlideView"/>
         /// </summary>
         public IUserSlideView UserSlideView { get; private set; }
-
-        public List<IBallView> Balls { get; } = new List<IBallView>();
-
-        public List<IBonusView> Bonuses { get; } = new List<IBonusView>();
 
         #endregion Public Properties
 
@@ -109,13 +110,27 @@ namespace Arcanoid.Views
         }
 
         /// <summary>
+        /// Загрузить выбранный уровень.
+        /// </summary>
+        /// <param name="idLvl"></param>
+        public void LoabLvl(int idLvl)
+        {
+            if (idLvl >= 0 && idLvl < _lvls.Length)
+            {
+                _nextLvlId = idLvl;
+            }
+
+            NextLvl();
+        }
+
+        /// <summary>
         /// <see cref="IGameFieldView.NextLvl"/>
         /// </summary>
         public void NextLvl()
         {
             CurrentLvl?.Close();
             ResetStates();
-            CurrentLvl = Instantiate(_lvls[_nextLvlId]);
+            CurrentLvl = Instantiate(_lvls[_nextLvlId], this.transform);
             _nextLvlId = (_nextLvlId + 1) % _lvls.Length;
         }
 
@@ -148,7 +163,7 @@ namespace Arcanoid.Views
 
         private void ResetStates()
         {
-            foreach(var ball in Balls)
+            foreach (var ball in Balls)
             {
                 ball.Remove();
             }

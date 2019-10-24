@@ -23,6 +23,11 @@
         /// </summary>
         void StartGame();
 
+        /// <summary>
+        /// Запуск шарика. Начало игры.
+        /// </summary>
+        void StopGame();
+
         #endregion Public Methods
     }
 }

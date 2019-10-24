@@ -116,6 +116,11 @@ namespace Arcanoid.Controllers
             }
         }
 
+        public void StopGame()
+        {
+            Reset();
+        }
+
         #endregion Public Methods
 
         #region Private Methods
@@ -215,7 +220,7 @@ namespace Arcanoid.Controllers
 
                 if (coliseResult.isColise)
                 {
-                    var lastDir =  _coliseController.CalculateRicochet(balls[ballId].LastMoveDir,
+                    var lastDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir,
                                                                                     coliseResult.normal);
                     //balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
                     balls[ballId].LastMoveDir = lastDir;
@@ -243,7 +248,7 @@ namespace Arcanoid.Controllers
                 coliseResult = _coliseController.CheckColise(movementSegment, balls[ballId].GetRadius(), slideBlock);
                 if (coliseResult.isColise)
                 {
-                    if(coliseResult.normal.y == -1)
+                    if (coliseResult.normal.y == -1)
                     {
                         var ricochet = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir, coliseResult.normal);
                         var center = slideBlock.GetCenter();
