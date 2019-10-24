@@ -31,13 +31,14 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5900760aa13440a41b965bef523c9b26, type: 3}
-    totalSpriteSurfaceArea: 84224
+    totalSpriteSurfaceArea: 149760
     bindAsDefault: 1
     storedHash:
       serializedVersion: 2
-      Hash: 6b64ca0007c12c7bc265b9f4e16b42d3
+      Hash: e2987e3ff6e7664b0a0c524012c65633
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: c16a1e3130bcd37498db09b3749ca4e2, type: 3}
   - {fileID: 21300000, guid: 07140a517247f8d4e84218bedf2b2330, type: 3}
   - {fileID: 21300000, guid: 173a07f1144f2034489df981fdf1e4ad, type: 3}
   - {fileID: 21300000, guid: 12111fa2c118aff4ab53f5f0556be107, type: 3}
@@ -45,6 +46,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 76cc704b46ee2ef47a710c14ee06cd8c, type: 3}
   - {fileID: 21300000, guid: 2aafcf2c67ef32449a37e5a7fc46a75c, type: 3}
   m_PackedSpriteNamesToIndex:
+  - border
   - arrow
   - speedDown
   - speedUp
