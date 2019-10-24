@@ -260,6 +260,19 @@ namespace Arcanoid.Controllers
                     break;
                 case BonusType.EXPAND_USER_SLIDE:
                     _userSlideView.SizeBonus += bonus.bonusSize;
+                    var block = _userSlideView.GetBlock();
+                    var fieldBlock = _gameFieldView.FieldBlock;
+                    var delta = 0.0f;
+                    if (block.BoundMin.x < fieldBlock.BoundMin.x)
+                    {
+                        delta = fieldBlock.BoundMin.x - block.BoundMin.x;
+                    }
+                    else if (block.BoundMax.x > fieldBlock.BoundMax.x)
+                    {
+                        delta = fieldBlock.BoundMax.x - block.BoundMax.x;
+                    }
+
+                    _userSlideView.Move(new Vector2(delta, 0));
                     break;
             }
         }
