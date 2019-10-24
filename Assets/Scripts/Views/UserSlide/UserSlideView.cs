@@ -17,6 +17,11 @@ namespace Arcanoid.Views
         /// </summary>
         private BoxCollider2D _colider;
 
+        /// <summary>
+        /// Начальная позиция плитки.
+        /// </summary>
+        private Vector3 _startPosition;
+
         #endregion Private Fields
 
         #region Public Properties
@@ -48,6 +53,14 @@ namespace Arcanoid.Views
             transform.position += new Vector3(moveVector.x, moveVector.y, 0.0f);
         }
 
+        /// <summary>
+        /// <see cref="IUserSlideView.ResetState"/>
+        /// </summary>
+        public void ResetState()
+        {
+            transform.position = _startPosition;
+        }
+
         #endregion Public Methods
 
         #region Private Methods
@@ -55,9 +68,10 @@ namespace Arcanoid.Views
         /// <summary>
         /// Иницилизация.
         /// </summary>
-        private void Start()
+        private void Awake()
         {
             _colider = GetComponent<BoxCollider2D>();
+            _startPosition = transform.position;
         }
 
         #endregion Private Methods

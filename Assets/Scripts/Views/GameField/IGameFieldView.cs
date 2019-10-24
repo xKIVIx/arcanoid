@@ -1,4 +1,5 @@
 ﻿using Arcanoid.Models;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arcanoid.Views
@@ -9,6 +10,11 @@ namespace Arcanoid.Views
     public interface IGameFieldView
     {
         #region Public Properties
+
+        /// <summary>
+        /// Список существующих шаров
+        /// </summary>
+        List<IBallView> Balls { get; }
 
         /// <summary>
         /// Текущий уровень.

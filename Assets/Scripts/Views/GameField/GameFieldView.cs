@@ -1,4 +1,5 @@
-﻿using Arcanoid.Models;
+﻿using System.Collections.Generic;
+using Arcanoid.Models;
 using UnityEngine;
 
 namespace Arcanoid.Views
@@ -58,6 +59,8 @@ namespace Arcanoid.Views
         /// </summary>
         public IUserSlideView UserSlideView => _userSlide;
 
+        public List<IBallView> Balls { get; } = new List<IBallView>();
+
         #endregion Public Properties
 
         #region Public Methods
@@ -67,7 +70,9 @@ namespace Arcanoid.Views
         /// </summary>
         public IBallView AddBall(Vector2 position)
         {
-            return Instantiate(_ballPrefab, position, new Quaternion(), this.transform);
+            var ball = Instantiate(_ballPrefab, position, new Quaternion(), this.transform);
+            Balls.Add(ball);
+            return ball;
         }
 
         /// <summary>
@@ -75,7 +80,7 @@ namespace Arcanoid.Views
         /// </summary>
         public IBallView AddBall()
         {
-            return Instantiate(_ballPrefab, _ballSpawn.position, new Quaternion(), this.transform);
+            return AddBall(_ballSpawn.position);
         }
 
         /// <summary>
@@ -84,6 +89,7 @@ namespace Arcanoid.Views
         public void NextLvl()
         {
             CurrentLvl?.Close();
+            ResetStates();
             CurrentLvl = Instantiate(_lvls[_nextLvlId]);
             _nextLvlId = (_nextLvlId + 1) % _lvls.Length;
         }
@@ -98,6 +104,17 @@ namespace Arcanoid.Views
             FieldBlock = new Block(colider.bounds);
             _nextLvlId = 0;
             NextLvl();
+        }
+
+        private void ResetStates()
+        {
+            foreach(var ball in Balls)
+            {
+                ball.Remove();
+            }
+            Balls.Clear();
+            AddBall();
+            _userSlide.ResetState();
         }
 
         #endregion Private Methods

@@ -7,6 +7,15 @@ namespace Arcanoid.Views
     /// </summary>
     public interface IBallView
     {
+        #region Public Properties
+
+        /// <summary>
+        /// Направление последнего движения.
+        /// </summary>
+        Vector2 LastMoveDir { get; set; }
+
+        #endregion Public Properties
+
         #region Public Methods
 
         /// <summary>

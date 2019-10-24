@@ -9,23 +9,6 @@ namespace Arcanoid.Controllers
     /// </summary>
     public class GameController : IGameController
     {
-        #region Private Structs
-
-        /// <summary>
-        /// Структура для хранения данных о шариках.
-        /// </summary>
-        private struct BallInfo
-        {
-            #region Public Fields
-
-            public Vector2 lastMoveDir;
-            public IBallView view;
-
-            #endregion Public Fields
-        }
-
-        #endregion Private Structs
-
         #region Public Constructors
 
         /// <summary>
@@ -50,18 +33,11 @@ namespace Arcanoid.Controllers
             _gameParams = gameParams;
             IsStartGame = false;
             _curFirstBlock = 0;
-
-            _balls = new BallInfo[] { new BallInfo { view = gameFieldView.AddBall() } };
         }
 
         #endregion Public Constructors
 
         #region Private Fields
-
-        /// <summary>
-        /// Существующие шары.
-        /// </summary>
-        private BallInfo[] _balls;
 
         /// <summary>
         /// Контроллер колизий.
@@ -124,7 +100,12 @@ namespace Arcanoid.Controllers
             if (!IsStartGame)
             {
                 var userSlideCenter = _gameFieldView.UserSlideView.GetBlock().GetCenter();
-                _balls[0].lastMoveDir = (_balls[0].view.GetCenter() - userSlideCenter).normalized;
+                if (_gameFieldView.Balls.Count == 0)
+                {
+                    Debug.LogError("Game field haven`t ball!");
+                    return;
+                }
+                _gameFieldView.Balls[0].LastMoveDir = (_gameFieldView.Balls[0].GetCenter() - userSlideCenter).normalized;
                 IsStartGame = true;
             }
         }
@@ -138,13 +119,14 @@ namespace Arcanoid.Controllers
         /// </summary>
         private void HandleBalls()
         {
-            for (var ballId = 0; ballId < _balls.Length; ballId++)
+            var balls = _gameFieldView.Balls;
+            for (var ballId = 0; ballId < balls.Count; ballId++)
             {
-                var currentPos = _balls[ballId].view.GetCenter();
+                var currentPos = balls[ballId].GetCenter();
                 var movementSegment = new MovementSegment()
                 {
                     startPoint = currentPos,
-                    endPoint = currentPos + _balls[ballId].lastMoveDir * _gameParams.ballSpeed
+                    endPoint = currentPos + balls[ballId].LastMoveDir * _gameParams.ballSpeed
                 };
 
                 var coliseResult = _coliseController.CheckColise(movementSegment, _gameFieldView.FieldBlock);
@@ -152,7 +134,8 @@ namespace Arcanoid.Controllers
                 if (coliseResult.isColise)
                 {
                     coliseResult.normal *= -1;
-                    _balls[ballId].lastMoveDir = _coliseController.CalculateRicochet(_balls[ballId].lastMoveDir, coliseResult.normal);
+                    balls[ballId].LastMoveDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir, 
+                                                                                    coliseResult.normal);
                     continue;
                 }
 
@@ -175,7 +158,8 @@ namespace Arcanoid.Controllers
 
                 if (coliseResult.isColise)
                 {
-                    _balls[ballId].lastMoveDir = _coliseController.CalculateRicochet(_balls[ballId].lastMoveDir, coliseResult.normal);
+                    balls[ballId].LastMoveDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir, 
+                                                                                    coliseResult.normal);
                     blocks[blockIdColise].Strike();
                     if (!blocks[blockIdColise].IsLive())
                     {
@@ -195,15 +179,15 @@ namespace Arcanoid.Controllers
                 coliseResult = _coliseController.CheckColise(movementSegment, slideBlock);
                 if (coliseResult.isColise)
                 {
-                    var ricochet = _coliseController.CalculateRicochet(_balls[ballId].lastMoveDir, coliseResult.normal);
+                    var ricochet = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir, coliseResult.normal);
                     var center = slideBlock.GetCenter();
                     ricochet += new Vector2(coliseResult.colisePoint.x - center.x, 0);
-                    _balls[ballId].lastMoveDir = ricochet.normalized;
+                    balls[ballId].LastMoveDir = ricochet.normalized;
 
                     continue;
                 }
 
-                _balls[ballId].view.Move(_balls[ballId].lastMoveDir * _gameParams.ballSpeed);
+                balls[ballId].Move(balls[ballId].LastMoveDir * _gameParams.ballSpeed);
             }
         }
 
@@ -212,7 +196,12 @@ namespace Arcanoid.Controllers
         /// </summary>
         private void HandlePrepareFire()
         {
-            var ballView = _balls[0].view;
+            if (_gameFieldView.Balls.Count == 0)
+            {
+                Debug.LogError("Game field haven`t ball!");
+                return;
+            }
+            var ballView = _gameFieldView.Balls[0];
             var ballCenter = ballView.GetCenter();
             var minX = _userSlideView.GetBlock().BoundMin.x;
             var maxX = _userSlideView.GetBlock().BoundMax.x;
@@ -232,6 +221,7 @@ namespace Arcanoid.Controllers
         /// </summary>
         private void HandleSuccessEnd()
         {
+            IsStartGame = false;
             _gameFieldView.NextLvl();
         }
 

@@ -17,6 +17,12 @@ namespace Arcanoid.Views
 
         #endregion Private Fields
 
+        #region Public Properties
+
+        public Vector2 LastMoveDir { get; set; }
+
+        #endregion Public Properties
+
         #region Public Methods
 
         public Vector2 GetCenter()
@@ -29,6 +35,7 @@ namespace Arcanoid.Views
         /// </summary>
         public void Move(Vector2 moveVector)
         {
+            LastMoveDir = moveVector.normalized;
             transform.position += new Vector3(moveVector.x, moveVector.y, 0.0f);
         }
 

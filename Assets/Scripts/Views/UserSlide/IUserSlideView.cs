@@ -33,6 +33,11 @@ namespace Arcanoid.Views
         /// </param>
         void Move(Vector2 moveVector);
 
+        /// <summary>
+        /// Вернуть плитку в изначальное состояние.
+        /// </summary>
+        void ResetState();
+
         #endregion Public Methods
     }
 }
