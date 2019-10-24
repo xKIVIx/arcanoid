@@ -180,7 +180,7 @@ namespace Arcanoid.Controllers
 
                 if (coliseResult.isColise)
                 {
-                    if (coliseResult.normal.y == -1)
+                    if (coliseResult.normal.y == 1)
                     {
                         balls[ballId].Remove();
                         balls.RemoveAt(ballId);
@@ -194,7 +194,7 @@ namespace Arcanoid.Controllers
                     {
                         var lastDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir,
                                                                           coliseResult.normal);
-                        //balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
+                        balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
                         balls[ballId].LastMoveDir = lastDir;
                     }
                     continue;
@@ -222,7 +222,7 @@ namespace Arcanoid.Controllers
                 {
                     var lastDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir,
                                                                                     coliseResult.normal);
-                    //balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
+                    balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
                     balls[ballId].LastMoveDir = lastDir;
 
                     blocks[blockIdColise].Strike();
@@ -248,12 +248,12 @@ namespace Arcanoid.Controllers
                 coliseResult = _coliseController.CheckColise(movementSegment, balls[ballId].GetRadius(), slideBlock);
                 if (coliseResult.isColise)
                 {
-                    if (coliseResult.normal.y == -1)
+                    if (coliseResult.normal.y == 1)
                     {
                         var ricochet = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir, coliseResult.normal);
                         var center = slideBlock.GetCenter();
                         ricochet += new Vector2(center.x - coliseResult.colisePoint.x, 0);
-                        //balls[ballId].Move(coliseResult.colisePoint - center);
+                        balls[ballId].Move(coliseResult.colisePoint - center);
                         balls[ballId].LastMoveDir = ricochet;
 
                         continue;

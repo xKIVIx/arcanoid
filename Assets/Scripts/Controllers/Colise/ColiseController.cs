@@ -66,7 +66,7 @@ namespace Arcanoid.Controllers
             double segmentDeltaX = startPoint.x - endPoint.x;
             double segmentK = startPoint.x * endPoint.y - endPoint.x * startPoint.y;
 
-            var l = isInBlock ? 1.0f : -1.0f;
+            var l = isInBlock ? -1.0f : 1.0f;
 
             var sides = new Side[]
             {
@@ -100,6 +100,7 @@ namespace Arcanoid.Controllers
                     {
                         currSqrDistance = v;
                         result.sqrDist = v;
+                        result.colisePoint = new Vector2((float)pointX, (float)pointY) + side.normal * (float)e * 1.05f;
                         result.normal = side.normal;
                     }
                 }
