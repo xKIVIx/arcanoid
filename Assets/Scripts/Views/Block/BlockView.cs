@@ -73,7 +73,7 @@ namespace Arcanoid.Views
         {
             var colider = GetComponent<BoxCollider2D>();
             _block = new Block(colider.bounds);
-            _currentHP = 0;
+            _currentHP = _lifeColors.Length - 1;
             _spriteRender = GetComponent<SpriteRenderer>();
 
             UpdateView();
