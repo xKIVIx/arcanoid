@@ -6,7 +6,7 @@ using UnityEngine;
 public class Init : MonoBehaviour
 {
     #region Private Fields
-    
+
     /// <summary>
     /// Параметры игры.
     /// </summary>

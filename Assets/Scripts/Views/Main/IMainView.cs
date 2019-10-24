@@ -7,12 +7,7 @@ namespace Arcanoid.Views
     /// </summary>
     public interface IMainView
     {
-        #region Public Properties
-
-        /// <summary>
-        /// Представление игрового поля.
-        /// </summary>
-        IGameFieldView GameFieldView { get; }
+        #region Public Events
 
         /// <summary>
         /// Запуск игры
@@ -23,6 +18,15 @@ namespace Arcanoid.Views
         /// Остановка игры.
         /// </summary>
         event Action OnStopnGame;
+
+        #endregion Public Events
+
+        #region Public Properties
+
+        /// <summary>
+        /// Представление игрового поля.
+        /// </summary>
+        IGameFieldView GameFieldView { get; }
 
         #endregion Public Properties
     }

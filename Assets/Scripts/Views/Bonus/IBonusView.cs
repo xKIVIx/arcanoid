@@ -3,12 +3,21 @@ using UnityEngine;
 
 namespace Arcanoid.Views
 {
+    /// <summary>
+    /// Интерфейст для представлений бонусов.
+    /// </summary>
     public interface IBonusView
     {
+        #region Public Properties
+
         /// <summary>
         /// Параметры бонуса
         /// </summary>
         Bonus BonusParametrs { get; set; }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         /// <summary>
         /// Получить информацию для расчета колизии.
@@ -26,5 +35,7 @@ namespace Arcanoid.Views
         /// Удалить бонус с поля.
         /// </summary>
         void Remove();
+
+        #endregion Public Methods
     }
 }

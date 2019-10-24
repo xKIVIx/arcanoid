@@ -1,17 +1,13 @@
 ﻿using Arcanoid.Models;
 using Arcanoid.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Arcanoid.Controllers
 {
     public class ControlTouchController : IControlController
     {
+        #region Public Constructors
+
         /// <summary>
         ///
         /// </summary>
@@ -27,6 +23,8 @@ namespace Arcanoid.Controllers
             _fieldBlock = fieldBlock;
         }
 
+        #endregion Public Constructors
+
         #region Private Fields
 
         private Block _fieldBlock;
@@ -36,6 +34,12 @@ namespace Arcanoid.Controllers
 
         #endregion Private Fields
 
+        #region Public Methods
+
+        /// <summary>
+        /// <see cref="IControlController.CheckPressStartGame"/>
+        /// </summary>
+        /// <returns></returns>
         public bool CheckPressStartGame()
         {
             var result = _isPressStartGame;
@@ -43,9 +47,11 @@ namespace Arcanoid.Controllers
             return result;
         }
 
+        /// <summary>
+        /// <see cref="IControlController.HandleUserAction"/>
+        /// </summary>
         public void HandleUserAction()
         {
-
             float width = Screen.width;
             var touchs = Input.touches;
             if (touchs.Length != 0)
@@ -59,15 +65,16 @@ namespace Arcanoid.Controllers
                 else if (touchs[0].position.x < width * 2.0f / 3.0f)
                 {
                     _isPressStartGame = true;
-                } 
+                }
                 else
                 {
                     var delta = _fieldBlock.BoundMax.x - _userSlideView.GetBlock().BoundMax.x;
                     var dist = Mathf.Min(delta, _slideSpeed);
                     _userSlideView.Move(new Vector2(dist, 0));
-                   
                 }
             }
         }
+
+        #endregion Public Methods
     }
 }

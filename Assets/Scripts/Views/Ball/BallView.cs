@@ -24,12 +24,19 @@ namespace Arcanoid.Views
 
         #region Public Properties
 
+        /// <summary>
+        /// <see cref="IBallView.LastMoveDir"/>
+        /// </summary>
         public Vector2 LastMoveDir { get; set; }
 
         #endregion Public Properties
 
         #region Public Methods
 
+        /// <summary>
+        /// <see cref="IBallView.GetCenter"/>
+        /// </summary>
+        /// <returns></returns>
         public Vector2 GetCenter()
         {
             return transform.position;
@@ -58,12 +65,11 @@ namespace Arcanoid.Views
         /// </summary>
         public void Remove()
         {
-            if(!_isDestroy)
+            if (!_isDestroy)
             {
                 Destroy(gameObject);
                 _isDestroy = true;
             }
-            
         }
 
         #endregion Public Methods

@@ -30,11 +30,11 @@ namespace Controllers.ColiseContrller
 
             var normals = new Vector2[]
             {
-                new Vector2(1.0f, 0.0f),
-                new Vector2(0.0f, 1.0f),
                 new Vector2(-1.0f, 0.0f),
                 new Vector2(0.0f, -1.0f),
-                new Vector2(0.0f, -1.0f)
+                new Vector2(1.0f, 0.0f),
+                new Vector2(0.0f, 1.0f),
+                new Vector2(0.0f, 1.0f)
             };
 
             var colisePoints = new Vector2[]
@@ -51,8 +51,8 @@ namespace Controllers.ColiseContrller
                 var result = _coliseController.CheckColise(movements[i], 0.0, _block);
                 Assert.IsTrue(result.isColise, $"Fail movement vector: start point: {movements[i].startPoint} end point: {movements[i].endPoint}");
                 Assert.AreEqual(normals[i], result.normal, $"Uncorrect normal: start point: {movements[i].startPoint} end point: {movements[i].endPoint}");
-                //Assert.AreEqual(colisePoints[i].x, result.colisePoint.x, 0.3, $"Uncorrect x coord colise point: start point: {movements[i].startPoint} end point: {movements[i].endPoint}");
-                //Assert.AreEqual(colisePoints[i].y, result.colisePoint.y, 0.3, $"Uncorrect y coord colise point: start point: {movements[i].startPoint} end point: {movements[i].endPoint}");
+                Assert.AreEqual(colisePoints[i].x, result.colisePoint.x, 0.3, $"Uncorrect x coord colise point: start point: {movements[i].startPoint} end point: {movements[i].endPoint}");
+                Assert.AreEqual(colisePoints[i].y, result.colisePoint.y, 0.3, $"Uncorrect y coord colise point: start point: {movements[i].startPoint} end point: {movements[i].endPoint}");
             }
         }
 

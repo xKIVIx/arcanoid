@@ -46,7 +46,6 @@ namespace Arcanoid.Controllers
         /// </summary>
         public ColiseData CheckColise(MovementSegment segment, double radius, Block block, bool isInBlock = false)
         {
-
             var startPoint = segment.startPoint;
             var endPoint = segment.endPoint;
 

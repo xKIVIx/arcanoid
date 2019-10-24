@@ -2,6 +2,9 @@
 
 namespace Arcanoid.Models
 {
+    /// <summary>
+    /// Сегмент перемещения. Содержит точку начала и конца пути.
+    /// </summary>
     public struct MovementSegment
     {
         #region Public Fields

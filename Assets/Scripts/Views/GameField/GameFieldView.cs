@@ -57,8 +57,14 @@ namespace Arcanoid.Views
 
         #region Public Properties
 
+        /// <summary>
+        /// <see cref="IGameFieldView.Balls"/>
+        /// </summary>
         public List<IBallView> Balls { get; } = new List<IBallView>();
 
+        /// <summary>
+        /// <see cref="IGameFieldView.Bonuses"/>
+        /// </summary>
         public List<IBonusView> Bonuses { get; } = new List<IBonusView>();
 
         /// <summary>
@@ -161,6 +167,9 @@ namespace Arcanoid.Views
             NextLvl();
         }
 
+        /// <summary>
+        /// Сброс состояний на поле.
+        /// </summary>
         private void ResetStates()
         {
             foreach (var ball in Balls)

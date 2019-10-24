@@ -1,5 +1,4 @@
-﻿using Arcanoid.Models;
-using Arcanoid.Views;
+﻿using Arcanoid.Views;
 
 namespace Arcanoid.Controllers
 {
@@ -9,8 +8,9 @@ namespace Arcanoid.Controllers
     public class MainController : IMainController
     {
         #region Public Constructors
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="mainView">Главный представление для взаимодействия с объектами на сцене.</param>
         /// <param name="controlController">Контроллер управления</param>
@@ -36,9 +36,9 @@ namespace Arcanoid.Controllers
         #region Private Fields
 
         private IControlController _controlController;
-        private IMainView _mainView;
         private IGameController _gameController;
         private bool _isStartGame;
+        private IMainView _mainView;
 
         #endregion Private Fields
 

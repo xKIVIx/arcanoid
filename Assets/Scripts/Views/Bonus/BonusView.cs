@@ -23,14 +23,14 @@ namespace Arcanoid.Views
         private BoxCollider2D _colider;
 
         /// <summary>
-        /// Рендер спрайта бонуса
-        /// </summary>
-        private SpriteRenderer _spriteRenderer;
-
-        /// <summary>
         /// Уничтожен ли объект?
         /// </summary>
         private bool _isDestroy = false;
+
+        /// <summary>
+        /// Рендер спрайта бонуса
+        /// </summary>
+        private SpriteRenderer _spriteRenderer;
 
         #endregion Private Fields
 
@@ -77,7 +77,7 @@ namespace Arcanoid.Views
         /// </summary>
         public void Remove()
         {
-            if(!_isDestroy)
+            if (!_isDestroy)
             {
                 Destroy(gameObject);
                 _isDestroy = true;

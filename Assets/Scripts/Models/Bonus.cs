@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Arcanoid.Models
 {
@@ -19,10 +18,14 @@ namespace Arcanoid.Models
     [CreateAssetMenu(fileName = "Bonus", menuName = "Bonus")]
     public class Bonus : ScriptableObject
     {
-        public Sprite sprite;
+        #region Public Fields
+
+        public float bonusSize;
+        public BonusType bonusType;
         public Color color;
         public float dropSpeed;
-        public BonusType bonusType;
-        public float bonusSize;
+        public Sprite sprite;
+
+        #endregion Public Fields
     }
 }
