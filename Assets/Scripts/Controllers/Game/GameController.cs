@@ -120,6 +120,42 @@ namespace Arcanoid.Controllers
 
         #region Private Methods
 
+        private void AcceptBonus(Bonus bonus)
+        {
+            switch (bonus.bonusType)
+            {
+                case BonusType.SPEED:
+                    if (_gameParams.ballSpeed + _speedBallBonus + bonus.bonusSize > _gameParams.ballSpeedMin)
+                    {
+                        _speedBallBonus += bonus.bonusSize;
+                    }
+                    break;
+
+                case BonusType.SPLIT_BALL:
+                    var mainBall = _gameFieldView.Balls[0];
+                    var ball = _gameFieldView.AddBall(mainBall.GetCenter());
+                    ball.LastMoveDir = mainBall.LastMoveDir * -1;
+                    break;
+
+                case BonusType.EXPAND_USER_SLIDE:
+                    _userSlideView.SizeBonus += bonus.bonusSize;
+                    var block = _userSlideView.GetBlock();
+                    var fieldBlock = _gameFieldView.FieldBlock;
+                    var delta = 0.0f;
+                    if (block.BoundMin.x < fieldBlock.BoundMin.x)
+                    {
+                        delta = fieldBlock.BoundMin.x - block.BoundMin.x;
+                    }
+                    else if (block.BoundMax.x > fieldBlock.BoundMax.x)
+                    {
+                        delta = fieldBlock.BoundMax.x - block.BoundMax.x;
+                    }
+
+                    _userSlideView.Move(new Vector2(delta, 0));
+                    break;
+            }
+        }
+
         /// <summary>
         /// Обработка перемещения шаров.
         /// </summary>
@@ -135,25 +171,26 @@ namespace Arcanoid.Controllers
                     endPoint = currentPos + balls[ballId].LastMoveDir * _gameParams.ballSpeed
                 };
 
-                var coliseResult = _coliseController.CheckColise(movementSegment, _gameFieldView.FieldBlock);
+                var coliseResult = _coliseController.CheckColise(movementSegment, _gameFieldView.FieldBlock, true);
 
                 if (coliseResult.isColise)
                 {
-                    if(coliseResult.normal.y == -1)
+                    if (coliseResult.normal.y == -1)
                     {
                         balls[ballId].Remove();
                         balls.RemoveAt(ballId);
                         ballId--;
-                        if(balls.Count == 0)
+                        if (balls.Count == 0)
                         {
                             HandleFailEnd();
                         }
                     }
                     else
                     {
-                        coliseResult.normal *= -1;
-                        balls[ballId].LastMoveDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir,
-                                                                                        coliseResult.normal);
+                        var lastDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir,
+                                                                          coliseResult.normal);
+                        balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
+                        balls[ballId].LastMoveDir = lastDir;
                     }
                     continue;
                 }
@@ -177,8 +214,11 @@ namespace Arcanoid.Controllers
 
                 if (coliseResult.isColise)
                 {
-                    balls[ballId].LastMoveDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir, 
+                    var lastDir =  _coliseController.CalculateRicochet(balls[ballId].LastMoveDir,
                                                                                     coliseResult.normal);
+                    balls[ballId].Move(coliseResult.colisePoint - balls[ballId].GetCenter());
+                    balls[ballId].LastMoveDir = lastDir;
+
                     blocks[blockIdColise].Strike();
                     if (!blocks[blockIdColise].IsLive())
                     {
@@ -205,7 +245,8 @@ namespace Arcanoid.Controllers
                     var ricochet = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir, coliseResult.normal);
                     var center = slideBlock.GetCenter();
                     ricochet += new Vector2(coliseResult.colisePoint.x - center.x, 0);
-                    balls[ballId].LastMoveDir = ricochet.normalized;
+                    balls[ballId].Move(coliseResult.colisePoint - center);
+                    balls[ballId].LastMoveDir = ricochet;
 
                     continue;
                 }
@@ -233,7 +274,7 @@ namespace Arcanoid.Controllers
                     continue;
                 }
 
-                if(_coliseController.CheckColise(bonusBlock, _userSlideView.GetBlock()))
+                if (_coliseController.CheckColise(bonusBlock, _userSlideView.GetBlock()))
                 {
                     AcceptBonus(bonuses[bonusId].BonusParametrs);
                     bonuses[bonusId].Remove();
@@ -246,35 +287,13 @@ namespace Arcanoid.Controllers
             }
         }
 
-        private void AcceptBonus(Bonus bonus)
+        /// <summary>
+        /// Обработка проигрыша
+        /// </summary>
+        private void HandleFailEnd()
         {
-            switch (bonus.bonusType)
-            {
-                case BonusType.SPEED:
-                    _speedBallBonus += bonus.bonusSize;
-                    break;
-                case BonusType.SPLIT_BALL:
-                    var mainBall = _gameFieldView.Balls[0];
-                    var ball = _gameFieldView.AddBall(mainBall.GetCenter());
-                    ball.LastMoveDir = mainBall.LastMoveDir * -1;
-                    break;
-                case BonusType.EXPAND_USER_SLIDE:
-                    _userSlideView.SizeBonus += bonus.bonusSize;
-                    var block = _userSlideView.GetBlock();
-                    var fieldBlock = _gameFieldView.FieldBlock;
-                    var delta = 0.0f;
-                    if (block.BoundMin.x < fieldBlock.BoundMin.x)
-                    {
-                        delta = fieldBlock.BoundMin.x - block.BoundMin.x;
-                    }
-                    else if (block.BoundMax.x > fieldBlock.BoundMax.x)
-                    {
-                        delta = fieldBlock.BoundMax.x - block.BoundMax.x;
-                    }
-
-                    _userSlideView.Move(new Vector2(delta, 0));
-                    break;
-            }
+            Reset();
+            _gameFieldView.Restart();
         }
 
         /// <summary>
@@ -307,14 +326,17 @@ namespace Arcanoid.Controllers
         /// </summary>
         private void HandleSuccessEnd()
         {
-            IsStartGame = false;
+            Reset();
             _gameFieldView.NextLvl();
         }
 
-        private void HandleFailEnd()
+        /// <summary>
+        /// Сброс состояний игры
+        /// </summary>
+        private void Reset()
         {
             IsStartGame = false;
-            _gameFieldView.Restart();
+            _speedBallBonus = 0.0f;
         }
 
         #endregion Private Methods

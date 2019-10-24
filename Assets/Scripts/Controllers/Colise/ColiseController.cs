@@ -44,7 +44,7 @@ namespace Arcanoid.Controllers
         /// <summary>
         /// <see cref="IColiseController.CheckColise(MovementSegment, Block)"/>
         /// </summary>
-        public ColiseData CheckColise(MovementSegment segment, Block block)
+        public ColiseData CheckColise(MovementSegment segment, Block block, bool isInBlock = false)
         {
             var startPoint = segment.startPoint;
             var endPoint = segment.endPoint;
@@ -58,12 +58,14 @@ namespace Arcanoid.Controllers
             var segmentDeltaX = startPoint.x - endPoint.x;
             var segmentK = startPoint.x * endPoint.y - endPoint.x * startPoint.y;
 
+            var l = isInBlock ? 1.0f : -1.0f;
+
             var sides = new Side[]
             {
-                new Side{ K = block.TopK, deltaX = block.DeltaTop.x, deltaY = block.DeltaTop.y, normal = new Vector2(0.0f, 1.0f) },
-                new Side{ K = block.RightK, deltaX = block.DeltaRight.x, deltaY = block.DeltaRight.y, normal = new Vector2(1.0f, 0.0f) },
-                new Side{ K = block.BottomK, deltaX = block.DeltaBottom.x, deltaY = block.DeltaBottom.y, normal = new Vector2(0.0f, -1.0f) },
-                new Side{ K = block.LeftK, deltaX = block.DeltaLeft.x, deltaY = block.DeltaLeft.y, normal = new Vector2(-1.0f, 0.0f) }
+                new Side{ K = block.TopK, deltaX = block.DeltaTop.x, deltaY = block.DeltaTop.y, normal = new Vector2(0.0f, l) },
+                new Side{ K = block.RightK, deltaX = block.DeltaRight.x, deltaY = block.DeltaRight.y, normal = new Vector2(l, 0.0f) },
+                new Side{ K = block.BottomK, deltaX = block.DeltaBottom.x, deltaY = block.DeltaBottom.y, normal = new Vector2(0.0f, -l) },
+                new Side{ K = block.LeftK, deltaX = block.DeltaLeft.x, deltaY = block.DeltaLeft.y, normal = new Vector2(-l, 0.0f) }
             };
 
             var result = new ColiseData();
@@ -78,7 +80,7 @@ namespace Arcanoid.Controllers
 
                 var point = new Vector2((side.K * segmentDeltaX - side.deltaX * segmentK) / d,
                                         (side.K * segmentDeltaY - side.deltaY * segmentK) / d);
-                float e = 0.01f;
+                float e = 0.05f;
                 if (point.x >= minPoint.x - e &&
                     point.x <= maxPoint.x + e &&
                     point.y >= minPoint.y - e &&
@@ -89,7 +91,7 @@ namespace Arcanoid.Controllers
                     if (v.sqrMagnitude < currSqrDistance)
                     {
                         currSqrDistance = v.sqrMagnitude;
-                        result.colisePoint = point;
+                        result.colisePoint = point - side.normal * e * 2.0f;
                         result.normal = side.normal;
                     }
                 }

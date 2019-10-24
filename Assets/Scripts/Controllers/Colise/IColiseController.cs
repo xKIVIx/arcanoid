@@ -23,9 +23,10 @@ namespace Arcanoid.Controllers
         /// </summary>
         /// <param name="segment">Отрезок перемещения</param>
         /// <param name="block">Информация о границах блока</param>
+        /// <param name="isInBlock">Должен находится внутри блока?</param>
         /// <returns>
         /// </returns>
-        ColiseData CheckColise(MovementSegment segment, Block block);
+        ColiseData CheckColise(MovementSegment segment, Block block, bool isInBlock = false);
 
         /// <summary>
         /// Проверяет колизиию двух блоков.

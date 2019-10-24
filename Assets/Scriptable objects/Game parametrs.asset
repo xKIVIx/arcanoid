@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Game parametrs
   m_EditorClassIdentifier: 
   ballSpeed: 0.1
-  fieldWidth: 640
-  slideSize: 50
   userSpeed: 0.1
+  ballSpeedMin: 0.01

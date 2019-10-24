@@ -9,6 +9,7 @@ namespace Arcanoid.Models
 
         public float ballSpeed = 1.0f;
         public float userSpeed = 1.0f;
+        public float ballSpeedMin = 1.0f;
 
         #endregion Public Fields
     }
