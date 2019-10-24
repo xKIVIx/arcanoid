@@ -15,9 +15,14 @@ namespace Arcanoid.Views
         Block GetBlockInfo();
 
         /// <summary>
-        /// Удалить блок.
+        /// Удар о блок шариком.
         /// </summary>
-        void Remove();
+        void Strike();
+
+        /// <summary>
+        /// Жив ли блок?
+        /// </summary>
+        bool IsLive();
 
         #endregion Public Methods
     }

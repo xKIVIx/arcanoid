@@ -7,6 +7,7 @@ namespace Arcanoid.Views
     /// Основная реализация разбиваемых блоков.
     /// </summary>
     [RequireComponent(typeof(BoxCollider2D))]
+    [RequireComponent(typeof(SpriteRenderer))]
     internal class BlockView : MonoBehaviour, IBlockView
     {
         #region Private Fields
@@ -15,6 +16,22 @@ namespace Arcanoid.Views
         /// Информация о блоке, для расчета колизии.
         /// </summary>
         private Block _block;
+
+        /// <summary>
+        /// Текущее количество здоровья.
+        /// </summary>
+        private int _currentHP;
+
+        /// <summary>
+        /// Цвета показывающие количество жизней. В конце массива для полностью целого блока.
+        /// </summary>
+        [SerializeField]
+        private Color32[] _lifeColors;
+
+        /// <summary>
+        /// Рендер спрайта.
+        /// </summary>
+        private SpriteRenderer _spriteRender;
 
         #endregion Private Fields
 
@@ -28,12 +45,21 @@ namespace Arcanoid.Views
             return _block;
         }
 
-        // <summary>
-        /// <see cref="IBlockView.Remove"/>
+        /// <summary>
+        /// <see cref="IBlockView.IsLive"/>
         /// </summary>
-        public void Remove()
+        public bool IsLive()
         {
-            Destroy(gameObject);
+            return _currentHP >= 0;
+        }
+
+        /// <summary>
+        /// <see cref="IBlockView.Strike"/>
+        /// </summary>
+        public void Strike()
+        {
+            _currentHP--;
+            UpdateView();
         }
 
         #endregion Public Methods
@@ -43,10 +69,29 @@ namespace Arcanoid.Views
         /// <summary>
         /// Иницилизация.
         /// </summary>
-        private void Setup()
+        private void Awake()
         {
             var colider = GetComponent<BoxCollider2D>();
             _block = new Block(colider.bounds);
+            _currentHP = 0;
+            _spriteRender = GetComponent<SpriteRenderer>();
+
+            UpdateView();
+        }
+
+        /// <summary>
+        /// Обновление отображения.
+        /// </summary>
+        private void UpdateView()
+        {
+            if (_currentHP >= 0)
+            {
+                _spriteRender.color = _lifeColors[_currentHP];
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
 
         #endregion Private Methods

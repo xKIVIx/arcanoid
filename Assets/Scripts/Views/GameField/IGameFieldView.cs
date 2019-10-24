@@ -11,6 +11,11 @@ namespace Arcanoid.Views
         #region Public Properties
 
         /// <summary>
+        /// Текущий уровень.
+        /// </summary>
+        ILvlView CurrentLvl { get; }
+
+        /// <summary>
         /// Данные для расчета колизии с границами поля.
         /// </summary>
         Block FieldBlock { get; }
@@ -36,6 +41,11 @@ namespace Arcanoid.Views
         /// </summary>
         /// <returns></returns>
         IBallView AddBall();
+
+        /// <summary>
+        /// Запустить следующий уровень
+        /// </summary>
+        void NextLvl();
 
         #endregion Public Methods
     }

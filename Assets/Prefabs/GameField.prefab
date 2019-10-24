@@ -28,7 +28,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8886270560219326283}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8886270560219326286
 GameObject:
@@ -60,7 +60,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 250034405113067208}
-  - {fileID: 8886270560329239275}
   - {fileID: 3189711905345213064}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -80,6 +79,10 @@ MonoBehaviour:
   _ballPrefab: {fileID: 114109760215208968, guid: 0df2590fd1bbd214882c58ac27e62f34,
     type: 3}
   _ballSpawn: {fileID: 3189711905345213064}
+  _lvls:
+  - {fileID: 114087672807576152, guid: aa34e82308228ac40a46b0282b458c4e, type: 3}
+  - {fileID: 114785268423656780, guid: b1897144b7754ec4580709dd9399330a, type: 3}
+  - {fileID: 114424037446904960, guid: 53da2430726de6045b8315b8768e5d8c, type: 3}
   _userSlide: {fileID: 9100700955394880891}
 --- !u!61 &8886270560219326281
 BoxCollider2D:
@@ -107,49 +110,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.6239204, y: 9.99851}
   m_EdgeRadius: 0
---- !u!1 &8886270560329239272
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8886270560329239275}
-  - component: {fileID: 8886270560329239269}
-  m_Layer: 0
-  m_Name: Blocks
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8886270560329239275
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8886270560329239272}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.05, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8886270560219326283}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!156049354 &8886270560329239269
-Grid:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8886270560329239272}
-  m_Enabled: 1
-  m_CellSize: {x: 0.5, y: 0.2, z: 1}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 0
 --- !u!1001 &834991803206710380
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ namespace Arcanoid.Controllers
     public class GameController : IGameController
     {
         #region Private Structs
+
         /// <summary>
         /// Структура для хранения данных о шариках.
         /// </summary>
@@ -26,8 +27,9 @@ namespace Arcanoid.Controllers
         #endregion Private Structs
 
         #region Public Constructors
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="gameFieldView">
         /// Представление игрового поля.
@@ -47,28 +49,29 @@ namespace Arcanoid.Controllers
             _coliseController = coliseController;
             _gameParams = gameParams;
             IsStartGame = false;
+            _curFirstBlock = 0;
 
             _balls = new BallInfo[] { new BallInfo { view = gameFieldView.AddBall() } };
-            _blocks = new IBlockView[0];
         }
 
         #endregion Public Constructors
 
         #region Private Fields
+
         /// <summary>
         /// Существующие шары.
         /// </summary>
         private BallInfo[] _balls;
 
         /// <summary>
-        /// Все блоки на уровне.
-        /// </summary>
-        private IBlockView[] _blocks;
-
-        /// <summary>
         /// Контроллер колизий.
         /// </summary>
         private IColiseController _coliseController;
+
+        /// <summary>
+        /// Индекс первого "живого" блока
+        /// </summary>
+        private int _curFirstBlock;
 
         /// <summary>
         /// Представление игровго поля.
@@ -129,18 +132,19 @@ namespace Arcanoid.Controllers
         #endregion Public Methods
 
         #region Private Methods
+
         /// <summary>
         /// Обработка перемещения шаров.
         /// </summary>
         private void HandleBalls()
         {
-            for (var i = 0; i < _balls.Length; i++)
+            for (var ballId = 0; ballId < _balls.Length; ballId++)
             {
-                var currentPos = _balls[i].view.GetCenter();
+                var currentPos = _balls[ballId].view.GetCenter();
                 var movementSegment = new MovementSegment()
                 {
                     startPoint = currentPos,
-                    endPoint = currentPos + _balls[i].lastMoveDir * _gameParams.ballSpeed
+                    endPoint = currentPos + _balls[ballId].lastMoveDir * _gameParams.ballSpeed
                 };
 
                 var coliseResult = _coliseController.CheckColise(movementSegment, _gameFieldView.FieldBlock);
@@ -148,27 +152,42 @@ namespace Arcanoid.Controllers
                 if (coliseResult.isColise)
                 {
                     coliseResult.normal *= -1;
-                    _balls[i].lastMoveDir = _coliseController.CalculateRicochet(_balls[i].lastMoveDir, coliseResult.normal);
+                    _balls[ballId].lastMoveDir = _coliseController.CalculateRicochet(_balls[ballId].lastMoveDir, coliseResult.normal);
                     continue;
                 }
 
                 var distance = float.MaxValue;
-                foreach (var block in _blocks)
+                var blocks = _gameFieldView.CurrentLvl.Blocks;
+                var blockIdColise = 0;
+                for (var blockId = _curFirstBlock; blockId < blocks.Length; blockId++)
                 {
-                    var coliseInfo = _coliseController.CheckColise(movementSegment, block.GetBlockInfo());
+                    var coliseInfo = _coliseController.CheckColise(movementSegment, blocks[blockId].GetBlockInfo());
                     if (coliseInfo.isColise)
                     {
                         var newDistance = (coliseInfo.colisePoint - currentPos);
                         if (newDistance.sqrMagnitude < distance)
                         {
                             coliseResult = coliseInfo;
+                            blockIdColise = blockId;
                         }
                     }
                 }
 
                 if (coliseResult.isColise)
                 {
-                    _balls[i].lastMoveDir = _coliseController.CalculateRicochet(_balls[i].lastMoveDir, coliseResult.normal);
+                    _balls[ballId].lastMoveDir = _coliseController.CalculateRicochet(_balls[ballId].lastMoveDir, coliseResult.normal);
+                    blocks[blockIdColise].Strike();
+                    if (!blocks[blockIdColise].IsLive())
+                    {
+                        var t = _gameFieldView.CurrentLvl.Blocks[blockIdColise];
+                        _gameFieldView.CurrentLvl.Blocks[blockIdColise] = blocks[_curFirstBlock];
+                        _gameFieldView.CurrentLvl.Blocks[_curFirstBlock] = t;
+                        _curFirstBlock++;
+                        if (_curFirstBlock == blocks.Length)
+                        {
+                            HandleSuccessEnd();
+                        }
+                    }
                     continue;
                 }
 
@@ -176,15 +195,15 @@ namespace Arcanoid.Controllers
                 coliseResult = _coliseController.CheckColise(movementSegment, slideBlock);
                 if (coliseResult.isColise)
                 {
-                    var ricochet = _coliseController.CalculateRicochet(_balls[i].lastMoveDir, coliseResult.normal);
+                    var ricochet = _coliseController.CalculateRicochet(_balls[ballId].lastMoveDir, coliseResult.normal);
                     var center = slideBlock.GetCenter();
                     ricochet += new Vector2(coliseResult.colisePoint.x - center.x, 0);
-                    _balls[i].lastMoveDir = ricochet.normalized;
+                    _balls[ballId].lastMoveDir = ricochet.normalized;
 
                     continue;
                 }
 
-                _balls[i].view.Move(_balls[i].lastMoveDir * _gameParams.ballSpeed);
+                _balls[ballId].view.Move(_balls[ballId].lastMoveDir * _gameParams.ballSpeed);
             }
         }
 
@@ -206,6 +225,14 @@ namespace Arcanoid.Controllers
             {
                 ballView.Move(new Vector2(maxX - ballCenter.x, 0));
             }
+        }
+
+        /// <summary>
+        /// Обработка успешного прохождения уровня.
+        /// </summary>
+        private void HandleSuccessEnd()
+        {
+            _gameFieldView.NextLvl();
         }
 
         #endregion Private Methods

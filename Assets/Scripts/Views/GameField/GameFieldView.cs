@@ -24,15 +24,30 @@ namespace Arcanoid.Views
         private Transform _ballSpawn;
 
         /// <summary>
+        /// Доступные уровни.
+        /// </summary>
+        [SerializeField]
+        private LvlView[] _lvls;
+
+        /// <summary>
         /// Плитка игрока.
         /// </summary>
         [SerializeField]
         private UserSlideView _userSlide;
 
+        /// <summary>
+        /// Номер следующего уровня.
+        /// </summary>
+        private int _nextLvlId;
+
         #endregion Private Fields
 
         #region Public Properties
 
+        /// <summary>
+        /// <see cref="IGameFieldView.CurrentLvl"/>
+        /// </summary>
+        public ILvlView CurrentLvl { get; private set; }
         /// <summary>
         /// <see cref="IGameFieldView.FieldBlock"/>
         /// </summary>
@@ -63,6 +78,16 @@ namespace Arcanoid.Views
             return Instantiate(_ballPrefab, _ballSpawn.position, new Quaternion(), this.transform);
         }
 
+        /// <summary>
+        /// <see cref="IGameFieldView.NextLvl"/>
+        /// </summary>
+        public void NextLvl()
+        {
+            CurrentLvl?.Close();
+            CurrentLvl = Instantiate(_lvls[_nextLvlId]);
+            _nextLvlId = (_nextLvlId + 1) % _lvls.Length;
+        }
+
         #endregion Public Methods
 
         #region Private Methods
@@ -71,6 +96,8 @@ namespace Arcanoid.Views
         {
             var colider = GetComponent<BoxCollider2D>();
             FieldBlock = new Block(colider.bounds);
+            _nextLvlId = 0;
+            NextLvl();
         }
 
         #endregion Private Methods
