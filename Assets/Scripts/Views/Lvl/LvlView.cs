@@ -15,6 +15,7 @@ namespace Arcanoid.Views
             if (!_isClosed)
             {
                 Destroy(gameObject);
+                _isClosed = true;
             }
         }
 

@@ -18,9 +18,21 @@ namespace Arcanoid.Views
         private Block _block;
 
         /// <summary>
+        /// Параметры бонуса
+        /// </summary>
+        [SerializeField]
+        private Bonus _bonus;
+
+        /// <summary>
         /// Текущее количество здоровья.
         /// </summary>
         private int _currentHP;
+
+        /// <summary>
+        /// Хранит ли блок бонус.
+        /// </summary>
+        [SerializeField]
+        private bool _isHasBonus = false;
 
         /// <summary>
         /// Цвета показывающие количество жизней. В конце массива для полностью целого блока.
@@ -34,6 +46,20 @@ namespace Arcanoid.Views
         private SpriteRenderer _spriteRender;
 
         #endregion Private Fields
+
+        #region Public Properties
+
+        /// <summary>
+        /// <see cref="IBlockView.Bonus"/>
+        /// </summary>
+        public Bonus Bonus => _bonus;
+
+        /// <summary>
+        /// <see cref="IBlockView.IsHasBonus"/>
+        /// </summary>
+        public bool IsHasBonus => _isHasBonus;
+
+        #endregion Public Properties
 
         #region Public Methods
 

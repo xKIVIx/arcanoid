@@ -60,6 +60,11 @@ namespace Arcanoid.Controllers
         private GameParams _gameParams;
 
         /// <summary>
+        /// Сумарный бонус к скорости шарика.
+        /// </summary>
+        private float _speedBallBonus;
+
+        /// <summary>
         /// Представление плитки игрока.
         /// </summary>
         private IUserSlideView _userSlideView;
@@ -85,6 +90,7 @@ namespace Arcanoid.Controllers
             if (IsStartGame)
             {
                 HandleBalls();
+                HandleBonuses();
             }
             else
             {
@@ -133,9 +139,22 @@ namespace Arcanoid.Controllers
 
                 if (coliseResult.isColise)
                 {
-                    coliseResult.normal *= -1;
-                    balls[ballId].LastMoveDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir, 
-                                                                                    coliseResult.normal);
+                    if(coliseResult.normal.y == -1)
+                    {
+                        balls[ballId].Remove();
+                        balls.RemoveAt(ballId);
+                        ballId--;
+                        if(balls.Count == 0)
+                        {
+                            HandleFailEnd();
+                        }
+                    }
+                    else
+                    {
+                        coliseResult.normal *= -1;
+                        balls[ballId].LastMoveDir = _coliseController.CalculateRicochet(balls[ballId].LastMoveDir,
+                                                                                        coliseResult.normal);
+                    }
                     continue;
                 }
 
@@ -163,6 +182,10 @@ namespace Arcanoid.Controllers
                     blocks[blockIdColise].Strike();
                     if (!blocks[blockIdColise].IsLive())
                     {
+                        if (blocks[blockIdColise].IsHasBonus)
+                        {
+                            _gameFieldView.AddBonus(blocks[blockIdColise].Bonus, blocks[blockIdColise].GetBlockInfo().GetCenter());
+                        }
                         var t = _gameFieldView.CurrentLvl.Blocks[blockIdColise];
                         _gameFieldView.CurrentLvl.Blocks[blockIdColise] = blocks[_curFirstBlock];
                         _gameFieldView.CurrentLvl.Blocks[_curFirstBlock] = t;
@@ -187,7 +210,57 @@ namespace Arcanoid.Controllers
                     continue;
                 }
 
-                balls[ballId].Move(balls[ballId].LastMoveDir * _gameParams.ballSpeed);
+                balls[ballId].Move(balls[ballId].LastMoveDir * (_gameParams.ballSpeed + _speedBallBonus));
+            }
+        }
+
+        /// <summary>
+        /// Обработка механици бонусов.
+        /// </summary>
+        private void HandleBonuses()
+        {
+            var bonuses = _gameFieldView.Bonuses;
+            for (var bonusId = 0; bonusId < bonuses.Count; bonusId++)
+            {
+                var bonusBlock = bonuses[bonusId].GetBlockInfo();
+                var currentPos = bonusBlock.GetCenter();
+
+                if (currentPos.y < _gameFieldView.FieldBlock.BoundMin.y)
+                {
+                    bonuses[bonusId].Remove();
+                    _gameFieldView.Bonuses.RemoveAt(bonusId);
+                    bonusId--;
+                    continue;
+                }
+
+                if(_coliseController.CheckColise(bonusBlock, _userSlideView.GetBlock()))
+                {
+                    AcceptBonus(bonuses[bonusId].BonusParametrs);
+                    bonuses[bonusId].Remove();
+                    _gameFieldView.Bonuses.RemoveAt(bonusId);
+                    bonusId--;
+                    continue;
+                }
+
+                bonuses[bonusId].Move(new Vector2(0, -1) * bonuses[bonusId].BonusParametrs.dropSpeed);
+            }
+        }
+
+        private void AcceptBonus(Bonus bonus)
+        {
+            switch (bonus.bonusType)
+            {
+                case BonusType.SPEED:
+                    _speedBallBonus += bonus.bonusSize;
+                    break;
+                case BonusType.SPLIT_BALL:
+                    var mainBall = _gameFieldView.Balls[0];
+                    var ball = _gameFieldView.AddBall(mainBall.GetCenter());
+                    ball.LastMoveDir = mainBall.LastMoveDir * -1;
+                    break;
+                case BonusType.EXPAND_USER_SLIDE:
+                    _userSlideView.SizeBonus += bonus.bonusSize;
+                    break;
             }
         }
 
@@ -223,6 +296,12 @@ namespace Arcanoid.Controllers
         {
             IsStartGame = false;
             _gameFieldView.NextLvl();
+        }
+
+        private void HandleFailEnd()
+        {
+            IsStartGame = false;
+            _gameFieldView.Restart();
         }
 
         #endregion Private Methods

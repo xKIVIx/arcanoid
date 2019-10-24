@@ -1,5 +1,4 @@
 ﻿using Arcanoid.Models;
-using System;
 using UnityEngine;
 
 namespace Arcanoid.Views
@@ -18,18 +17,36 @@ namespace Arcanoid.Views
         private BoxCollider2D _colider;
 
         /// <summary>
+        /// Бонусный размер
+        /// </summary>
+        private float _sizeBonus;
+
+        /// <summary>
         /// Начальная позиция плитки.
         /// </summary>
         private Vector3 _startPosition;
+
+        /// <summary>
+        /// Изначальный размер
+        /// </summary>
+        private Vector3 _startSize;
 
         #endregion Private Fields
 
         #region Public Properties
 
         /// <summary>
-        /// <see cref="IUserSlideView.CountSizeBonus"/>
+        /// <see cref="IUserSlideView.SizeBonus"/>
         /// </summary>
-        public uint CountSizeBonus { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float SizeBonus
+        {
+            get => _sizeBonus;
+            set
+            {
+                _sizeBonus = value;
+                transform.localScale = _startSize + new Vector3(_sizeBonus, 0, 0);
+            }
+        }
 
         #endregion Public Properties
 
@@ -59,6 +76,7 @@ namespace Arcanoid.Views
         public void ResetState()
         {
             transform.position = _startPosition;
+            transform.localScale = _startSize;
         }
 
         #endregion Public Methods
@@ -72,6 +90,7 @@ namespace Arcanoid.Views
         {
             _colider = GetComponent<BoxCollider2D>();
             _startPosition = transform.position;
+            _startSize = transform.localScale;
         }
 
         #endregion Private Methods

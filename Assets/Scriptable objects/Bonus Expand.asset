@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7169e3f7c5dec9b45b83c2ba0c652b9d, type: 3}
+  m_Name: Bonus Expand
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 07140a517247f8d4e84218bedf2b2330, type: 3}
+  color: {r: 0.14278197, g: 1, b: 0, a: 1}
+  dropSpeed: 0.1
+  bonusType: 2
+  bonusSize: 0.5

@@ -27,6 +27,15 @@ namespace Arcanoid.Controllers
         /// </returns>
         ColiseData CheckColise(MovementSegment segment, Block block);
 
+        /// <summary>
+        /// Проверяет колизиию двух блоков.
+        /// </summary>
+        /// <param name="blockOne"></param>
+        /// <param name="blockTwo"></param>
+        /// <returns>
+        /// </returns>
+        bool CheckColise(Block blockOne, Block blockTwo);
+
         #endregion Public Methods
     }
 }

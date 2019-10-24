@@ -17,6 +17,11 @@ namespace Arcanoid.Views
         List<IBallView> Balls { get; }
 
         /// <summary>
+        /// Бонусы на поле.
+        /// </summary>
+        List<IBonusView> Bonuses { get; }
+
+        /// <summary>
         /// Текущий уровень.
         /// </summary>
         ILvlView CurrentLvl { get; }
@@ -49,9 +54,26 @@ namespace Arcanoid.Views
         IBallView AddBall();
 
         /// <summary>
+        /// Добавить бонус на поле.
+        /// </summary>
+        /// <param name="bonusInfo">
+        /// Информация о бонусе.
+        /// </param>
+        /// <param name="position">
+        /// Точка появления
+        /// </param>
+        /// <returns></returns>
+        IBonusView AddBonus(Bonus bonusInfo, Vector2 position);
+
+        /// <summary>
         /// Запустить следующий уровень
         /// </summary>
         void NextLvl();
+
+        /// <summary>
+        /// Перезагрузка поля.
+        /// </summary>
+        void Restart();
 
         #endregion Public Methods
     }

@@ -7,7 +7,22 @@ namespace Arcanoid.Views
     /// </summary>
     public interface IBlockView
     {
+        #region Public Properties
+
+        /// <summary>
+        /// Параметры содержащегося бонуса.
+        /// </summary>
+        Bonus Bonus { get; }
+
+        /// <summary>
+        /// Есть ли бонус в блоке.
+        /// </summary>
+        bool IsHasBonus { get; }
+
+        #endregion Public Properties
+
         #region Public Methods
+
         /// <summary>
         /// Получить информацию для расчета колизии.
         /// </summary>
@@ -15,14 +30,14 @@ namespace Arcanoid.Views
         Block GetBlockInfo();
 
         /// <summary>
-        /// Удар о блок шариком.
-        /// </summary>
-        void Strike();
-
-        /// <summary>
         /// Жив ли блок?
         /// </summary>
         bool IsLive();
+
+        /// <summary>
+        /// Удар о блок шариком.
+        /// </summary>
+        void Strike();
 
         #endregion Public Methods
     }

@@ -100,6 +100,17 @@ namespace Arcanoid.Controllers
             return result;
         }
 
+        /// <summary>
+        /// <see cref="IColiseController.CheckColise(Block, Block)"/>
+        /// </summary>
+        /// <param name="blockOne"></param>
+        /// <param name="blockTwo"></param>
+        /// <returns></returns>
+        public bool CheckColise(Block blockOne, Block blockTwo)
+        {
+            return blockOne.Bounds.Intersects(blockTwo.Bounds);
+        }
+
         #endregion Public Methods
     }
 }

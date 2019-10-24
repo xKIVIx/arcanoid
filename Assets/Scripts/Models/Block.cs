@@ -51,6 +51,11 @@ namespace Arcanoid.Models
         public Vector3 BoundMin => _bounds.min;
 
         /// <summary>
+        /// Границы блока.
+        /// </summary>
+        public Bounds Bounds => _bounds;
+
+        /// <summary>
         /// (x1 - x2, y1 - y2)
         /// </summary>
         public Vector2 DeltaBottom { get; }

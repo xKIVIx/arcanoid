@@ -11,9 +11,9 @@ namespace Arcanoid.Views
         #region Public Properties
 
         /// <summary>
-        /// Количество бонусов на увелечение размера.
+        /// Величина изменения размера за счет бонусов.
         /// </summary>
-        uint CountSizeBonus { get; set; }
+        float SizeBonus { get; set; }
 
         #endregion Public Properties
 

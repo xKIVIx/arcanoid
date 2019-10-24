@@ -15,6 +15,11 @@ namespace Arcanoid.Views
         /// </summary>
         private CircleCollider2D _colider;
 
+        /// <summary>
+        /// Объект уничтожен?
+        /// </summary>
+        private bool _isDestroy = false;
+
         #endregion Private Fields
 
         #region Public Properties
@@ -44,7 +49,12 @@ namespace Arcanoid.Views
         /// </summary>
         public void Remove()
         {
-            Destroy(gameObject);
+            if(!_isDestroy)
+            {
+                Destroy(gameObject);
+                _isDestroy = true;
+            }
+            
         }
 
         #endregion Public Methods

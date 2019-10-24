@@ -427,6 +427,16 @@ PrefabInstance:
       propertyPath: _lifeColors.Array.data[0].rgba
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 114078209516263988, guid: bca33822137493c44bf2f5c8c7eb30c7,
+        type: 3}
+      propertyPath: _bonus
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114078209516263988, guid: bca33822137493c44bf2f5c8c7eb30c7,
+        type: 3}
+      propertyPath: _isHasBonus
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bca33822137493c44bf2f5c8c7eb30c7, type: 3}
 --- !u!4 &3987229593023341035 stripped
@@ -967,6 +977,16 @@ PrefabInstance:
       propertyPath: _lifeColors.Array.data[0].rgba
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 114078209516263988, guid: bca33822137493c44bf2f5c8c7eb30c7,
+        type: 3}
+      propertyPath: _bonus
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114078209516263988, guid: bca33822137493c44bf2f5c8c7eb30c7,
+        type: 3}
+      propertyPath: _isHasBonus
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bca33822137493c44bf2f5c8c7eb30c7, type: 3}
 --- !u!4 &2852978126861793802 stripped
@@ -1237,6 +1257,16 @@ PrefabInstance:
       propertyPath: _lifeColors.Array.data[0].rgba
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 114078209516263988, guid: bca33822137493c44bf2f5c8c7eb30c7,
+        type: 3}
+      propertyPath: _bonus
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114078209516263988, guid: bca33822137493c44bf2f5c8c7eb30c7,
+        type: 3}
+      propertyPath: _isHasBonus
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bca33822137493c44bf2f5c8c7eb30c7, type: 3}
 --- !u!4 &3397908377354800040 stripped
@@ -1491,6 +1521,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _lifeColors.Array.data[0].rgba
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 114078209516263988, guid: bca33822137493c44bf2f5c8c7eb30c7,
+        type: 3}
+      propertyPath: _bonus
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114078209516263988, guid: bca33822137493c44bf2f5c8c7eb30c7,
+        type: 3}
+      propertyPath: _isHasBonus
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bca33822137493c44bf2f5c8c7eb30c7, type: 3}
@@ -1766,6 +1806,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _lifeColors.Array.data[0].rgba
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 114078209516263988, guid: bca33822137493c44bf2f5c8c7eb30c7,
+        type: 3}
+      propertyPath: _bonus
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114078209516263988, guid: bca33822137493c44bf2f5c8c7eb30c7,
+        type: 3}
+      propertyPath: _isHasBonus
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bca33822137493c44bf2f5c8c7eb30c7, type: 3}

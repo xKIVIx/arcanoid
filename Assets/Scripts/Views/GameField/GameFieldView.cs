@@ -19,6 +19,12 @@ namespace Arcanoid.Views
         private BallView _ballPrefab;
 
         /// <summary>
+        /// префаб бонуса.
+        /// </summary>
+        [SerializeField]
+        private BonusView _bonusPrefab;
+
+        /// <summary>
         /// Точка появления первого шара.
         /// </summary>
         [SerializeField]
@@ -61,6 +67,8 @@ namespace Arcanoid.Views
 
         public List<IBallView> Balls { get; } = new List<IBallView>();
 
+        public List<IBonusView> Bonuses { get; } = new List<IBonusView>();
+
         #endregion Public Properties
 
         #region Public Methods
@@ -84,6 +92,17 @@ namespace Arcanoid.Views
         }
 
         /// <summary>
+        /// <see cref="IGameFieldView.AddBonus(Bonus, Vector2)"/>
+        /// </summary>
+        public IBonusView AddBonus(Bonus bonusInfo, Vector2 position)
+        {
+            var bonusView = Instantiate(_bonusPrefab, position, new Quaternion(), this.transform);
+            bonusView.BonusParametrs = bonusInfo;
+            Bonuses.Add(bonusView);
+            return bonusView;
+        }
+
+        /// <summary>
         /// <see cref="IGameFieldView.NextLvl"/>
         /// </summary>
         public void NextLvl()
@@ -92,6 +111,20 @@ namespace Arcanoid.Views
             ResetStates();
             CurrentLvl = Instantiate(_lvls[_nextLvlId]);
             _nextLvlId = (_nextLvlId + 1) % _lvls.Length;
+        }
+
+        /// <summary>
+        /// <see cref="IGameFieldView.Restart"/>
+        /// </summary>
+        public void Restart()
+        {
+            _nextLvlId--;
+            if (_nextLvlId < 0)
+            {
+                _nextLvlId = _lvls.Length - 1;
+            }
+
+            NextLvl();
         }
 
         #endregion Public Methods

@@ -78,6 +78,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ballPrefab: {fileID: 114109760215208968, guid: 0df2590fd1bbd214882c58ac27e62f34,
     type: 3}
+  _bonusPrefab: {fileID: 114670184486195786, guid: de27b129aac962549a3a7b1e394fc421,
+    type: 3}
   _ballSpawn: {fileID: 3189711905345213064}
   _lvls:
   - {fileID: 114087672807576152, guid: aa34e82308228ac40a46b0282b458c4e, type: 3}
